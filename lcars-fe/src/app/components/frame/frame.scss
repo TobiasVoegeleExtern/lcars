@@ -1,117 +1,176 @@
+/* =================================================================
+   LCARS-TRON CORE FRAME (32nd Century Refactor)
+================================================================= */
+
 :host {
-  --lcars-bar-width: 150px;
-  --lcars-bar-height: 35px;
-  --lcars-elbow-size: 60px;
-  --transition-speed: 0.3s;
+  --lcars-sidebar-width: 160px;
+  --lcars-bar-height: 30px;
+  --lcars-gap: 6px;
+  --lcars-radius: 40px;
+  --transition-speed: 0.4s;
 }
 
 .lcars-frame-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #0b44a7; // Tiefes Tron-Schwarz
+  width: 100vw;
+  background-color: var(--background-color, #02060a); // Echtes Tron-Schwarz
+  color: var(--text-color, #e0faff);
   font-family: 'Oswald', sans-serif;
   overflow: hidden;
 
-  /* LCARS ELBOWS */
-  .lcars-elbow-top-left {
-    width: var(--lcars-bar-width);
-    height: var(--lcars-elbow-size);
-    background: var(--tron-accent);
-    border-radius: var(--lcars-elbow-size) 0 0 0;
-    margin-bottom: 5px;
-  }
-
-  .lcars-top-bar {
-    flex: 1;
-    height: var(--lcars-bar-height);
-    background: var(--tron-accent);
-    margin-left: 5px;
+  /* --- HEADER AREA --- */
+  .lcars-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    color: #000;
-    font-weight: bold;
-    letter-spacing: 2px;
+    align-items: flex-end;
+    padding: var(--lcars-gap) var(--lcars-gap) 0 var(--lcars-gap);
+
+    .lcars-elbow-top-left {
+      width: var(--lcars-sidebar-width);
+      height: 70px;
+      background: var(--tron-accent);
+      border-radius: var(--lcars-radius) 0 0 0;
+      box-shadow: -2px -2px 15px var(--tron-cyan-glow);
+    }
+
+    .lcars-top-bar {
+      flex: 1;
+      height: var(--lcars-bar-height);
+      background: var(--tron-accent);
+      margin-left: var(--lcars-gap);
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      
+      .system-title {
+        color: #000;
+        font-weight: 800;
+        letter-spacing: 3px;
+        font-size: 0.9rem;
+      }
+    }
   }
-}
 
-.lcars-header {
-  display: flex;
-  align-items: flex-end;
-}
-
-.lcars-main-layout {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-}
-
-.lcars-sidebar {
-  width: var(--lcars-bar-width);
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-
-  .lcars-nav-item {
-    height: 40px;
-    background: var(--tron-accent);
-    color: #000;
-    text-decoration: none;
+  /* --- MAIN CONTENT AREA --- */
+  .lcars-main-layout {
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-right: 15px;
-    font-weight: bold;
-    transition: filter 0.2s;
-
-    &:hover { filter: brightness(1.2); }
-    &.active { background: #fff; box-shadow: 0 0 15px #fff; }
-    
-    &.item-blue { background: #86abff; }
-    &.item-orange { background: #ff9d00; }
-  }
-
-  .lcars-filler {
     flex: 1;
-    background: var(--tron-accent);
-    width: var(--lcars-bar-width);
-    border-radius: 0 0 0 var(--lcars-elbow-size);
+    overflow: hidden;
+    padding: 0 var(--lcars-gap);
+
+    /* --- SIDEBAR REFACTOR --- */
+    .lcars-sidebar {
+      width: var(--lcars-sidebar-width);
+      display: flex;
+      flex-direction: column;
+      gap: var(--lcars-gap);
+      padding-top: var(--lcars-gap);
+
+      .lcars-nav-item {
+        height: 45px;
+        background: var(--tron-accent);
+        color: #000;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 20px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        transition: all var(--transition-speed);
+        clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%); // Tron-Schliff
+
+        &:hover { 
+          filter: brightness(1.3); 
+          padding-right: 25px;
+        }
+
+        &.active { 
+          background: #fff; 
+          box-shadow: 0 0 20px #fff;
+        }
+
+        &.item-blue { background: var(--lcars-blue, #86abff); }
+        &.item-orange { background: var(--tron-orange, #ff9d00); }
+      }
+
+      .lcars-filler {
+        flex: 1;
+        background: var(--tron-accent);
+        width: 100%;
+        border-radius: 0 0 0 var(--lcars-radius);
+        box-shadow: -2px 2px 15px var(--tron-cyan-glow);
+      }
+    }
+
+    /* --- CONTENT AREA --- */
+    .lcars-content {
+      flex: 1;
+      padding: 20px;
+      position: relative;
+      background: rgba(0, 0, 0, 0.3);
+      margin-left: var(--lcars-gap);
+      margin-bottom: var(--lcars-gap);
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-image: 
+          linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+        pointer-events: none;
+      }
+
+      .scroll-container {
+        height: 100%;
+        overflow-y: auto;
+        padding-right: 10px;
+        mask-image: linear-gradient(to bottom, black 95%, transparent 100%);
+      }
+    }
   }
 }
 
-.lcars-content {
-  flex: 1;
-  padding: 20px;
-  position: relative;
-  
-  // Der Tron Grid Effekt
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-  }
-
-  .scroll-container {
-    position: relative;
-    height: 100%;
-    overflow-y: auto;
-    z-index: 2;
-  }
-}
-
-/* BIT POSITIONING */
-.header-controls {
+/* --- 32nd CENTURY PROGRAMMABLE MATTER TOGGLE --- */
+.lcars-32nd-toggle {
+  margin: 15px 0;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 4px solid var(--tron-cyan);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
-  gap: 15px;
-  
-  .bit-container {
-    transform: scale(0.7); // Etwas kleiner für die Top-Bar
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  .matter-fragments {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    .fragment {
+      position: absolute;
+      background: var(--tron-cyan);
+      box-shadow: 0 0 8px var(--tron-cyan-glow);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .f1 { width: 8px; height: 8px; top: 0; left: 8px; }
+    .f2 { width: 6px; height: 6px; bottom: 2px; left: 0; }
+    .f3 { width: 10px; height: 3px; bottom: 0; right: 0; }
+  }
+
+  &.active {
+    border-left-color: var(--tron-orange);
+    .fragment {
+      background: var(--tron-orange);
+      box-shadow: 0 0 12px var(--tron-orange-glow);
+      &.f1 { transform: translate(4px, 12px) rotate(45deg); }
+      &.f2 { transform: translate(12px, -8px) scale(1.5); }
+      &.f3 { transform: rotate(-90deg) translate(5px, 5px); }
+    }
   }
 }
