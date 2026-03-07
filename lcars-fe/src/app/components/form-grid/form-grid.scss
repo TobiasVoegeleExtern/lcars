@@ -1,27 +1,41 @@
 /* =======================================================
-   TITLE
+   LCARS FORM WRAPPER
+   ======================================================= */
+.form-layout-wrapper {
+  font-family: 'JetBrains Mono', monospace;
+  position: relative;
+  width: 100%;
+}
+
+/* =======================================================
+   TITLE & WARNING
    ======================================================= */
 .title-wrapper {
   display: block; 
-  margin-bottom: 3rem; 
-  min-height: 28px; /* Verhindert Layout-Sprünge beim Text-Tausch */
+  margin-bottom: 2rem; 
+  min-height: 28px; 
 
   ::ng-deep [form-title] {
     display: block;
     margin-bottom: 0 !important; 
     line-height: 1.4;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--tron-cyan);
+    text-shadow: 0 0 10px var(--tron-cyan-glow);
   }
 
-  /* Der dynamisch ausgetauschte Titel beim Hover */
   .permission-warning-title {
     margin: 0;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--tron-red, #ff003c); // Fallback-Rot, falls die Variable fehlt
-    text-shadow: 0 0 8px var(--tron-red-glow, rgba(255, 0, 60, 0.6));
-    animation: tron-glitch-text 0.3s ease-in-out;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--tron-red, #ff003c);
+    text-shadow: 0 0 12px rgba(255, 0, 60, 0.8);
+    background: rgba(255, 0, 60, 0.1);
+    padding: 5px 10px;
+    border-left: 4px solid var(--tron-red, #ff003c);
+    animation: tron-glitch-text 0.15s ease-in-out infinite alternate;
   }
 }
 
@@ -29,48 +43,31 @@
    SECURITY: FIELDSET WRAPPER
    ======================================================= */
 .security-fieldset {
-  border: none;
-  padding: 0;
-  margin: 0;
-  min-width: 0; 
-  width: 100%;
-
+  border: none; padding: 0; margin: 0; width: 100%;
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.4;
     pointer-events: none; 
-    filter: grayscale(30%); 
+    filter: grayscale(80%) contrast(150%);
   }
 }
 
 /* =======================================================
-   TRON PANEL FRAME
+   TRON PANEL FRAME (LCARS Style)
    ======================================================= */
 .tron-panel-frame {
-  background-color: var(--tron-card-bg);
-  border: 1px solid var(--tron-card-border);
-  border-radius: 12px;
-  padding: 2.5rem;
-  box-shadow: var(--tron-card-shadow);
-  color: var(--tron-text);
+  background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,26,45,0.9) 100%);
+  border: 1px solid rgba(0, 243, 255, 0.2);
+  /* Der dicke LCARS-Balken an der linken Seite */
+  border-left: 12px solid var(--tron-cyan); 
+  border-radius: 0 15px 15px 0;
+  padding: 2rem;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.5);
+  color: #fff;
   transition: all 0.3s ease;
-  margin-bottom: 1rem;
-  max-width: 900px;
-  position: relative; 
-  overflow: hidden;
 
-  /* Normaler Hover-Effekt (wenn man Rechte hat) */
   &:not(.access-denied):hover {
     border-color: var(--tron-cyan);
-    box-shadow: 0 0 15px var(--tron-cyan-glow);
-  }
-
-  ::ng-deep [form-title] {
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--tron-cyan);
-    text-shadow: 0 0 8px var(--tron-cyan-glow);
+    box-shadow: inset 0 0 30px rgba(0, 243, 255, 0.1), 0 0 20px rgba(0, 243, 255, 0.2);
   }
 }
 
@@ -78,149 +75,52 @@
    ACCESS DENIED & GLITCH EFFECT
    ======================================================= */
 @keyframes tron-glitch {
-  0% { transform: translate(0) }
-  20% { transform: translate(-2px, 2px) }
-  40% { transform: translate(-2px, -2px) }
-  60% { transform: translate(2px, 2px) }
-  80% { transform: translate(2px, -2px) }
-  100% { transform: translate(0) }
+  0% { transform: translate(0); border-left-color: var(--tron-red, #ff003c); }
+  20% { transform: translate(-3px, 1px); }
+  40% { transform: translate(-1px, -3px); }
+  60% { transform: translate(3px, 1px); }
+  80% { transform: translate(1px, -3px); }
+  100% { transform: translate(0); border-left-color: transparent; }
 }
 
 @keyframes tron-glitch-text {
-  0% { opacity: 0; transform: translateY(-5px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes scanline {
-  0% { top: -10%; opacity: 0; }
-  10% { opacity: 0.5; }
-  90% { opacity: 0.5; }
-  100% { top: 110%; opacity: 0; }
+  0% { opacity: 0.8; transform: skewX(-10deg); }
+  100% { opacity: 1; transform: skewX(10deg); }
 }
 
 .access-denied {
   cursor: not-allowed;
+  border-left-color: var(--tron-red, #ff003c);
 
-  /* Stör-Border beim Hovern */
   &:hover {
-    border-color: var(--tron-red);
-    box-shadow: 0 0 15px var(--tron-red-glow), inset 0 0 20px var(--tron-red-glow);
+    border-color: var(--tron-red, #ff003c);
+    box-shadow: 0 0 15px rgba(255, 0, 60, 0.4), inset 0 0 20px rgba(255, 0, 60, 0.2);
     animation: tron-glitch 0.2s cubic-bezier(.25, .46, .45, .94) both infinite;
   }
-
-  /* Scanline-Effekt  */
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--tron-red);
-    box-shadow: 0 0 10px var(--tron-red);
-    opacity: 0;
-    z-index: 10;
-    pointer-events: none;
-  }
-
-  &:hover::before {
-    animation: scanline 1.5s linear infinite;
-  }
 }
 
 /* =======================================================
-   LAYOUT: STACKED
+   LAYOUTS
    ======================================================= */
 .vertical-form {
-  display: flex;
-  flex-direction: column;
-
+  display: flex; flex-direction: column;
   .inputs-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-
-    ::ng-deep app-input,
-    ::ng-deep app-dropdown,
-    ::ng-deep app-checkbox,
-    ::ng-deep app-textfield,
-    ::ng-deep app-date-picker, 
-    ::ng-deep .custom-select-wrapper {
-      display: flex;
-      align-items: center; 
-      gap: 2.5rem;
-      width: 100%;
-
-      &[label=""], &:not([label]) {
-        &:before {
-          content: "";
-          flex: 0 0 200px; 
-          display: block;
-        }
-      }
-
-      label:not(.checkbox-wrapper) {
-        flex: 0 0 200px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: var(--text-color-muted);
-        text-align: right;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin: 0;
-      }
-
-      input, 
-      select, 
-      .dropdown-container, 
-      .checkbox-wrapper {
-        flex: 1;
-        max-width: 450px;
-        width: 100%;
-      }
-
-      .checkbox-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding-left: 0; 
-      }
-    }
-  }
-
-  .action-row {
-    display: flex;
-    align-items: center;
-    gap: 2.5rem; 
-    margin-top: 1.5rem;
-
-    .action-spacer {
-      flex: 0 0 200px; 
-    }
-
-    .action-buttons {
-      display: flex;
-      gap: 1rem;
-    }
-  }
-}
-
-/* =======================================================
-   LAYOUT: GRID
-   ======================================================= */
-.grid-form {
-  .inputs-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 300px));
-    gap: 15px;
-    align-items: flex-end;
-  }
-
-  .action-row {
-    margin-top: 20px;
+    display: flex; flex-direction: column; gap: 1rem;
     
-    .action-buttons {
-      display: flex;
-      gap: 1rem;
+    ::ng-deep .lcars-input-row {
+      display: flex; align-items: center; gap: 1rem; width: 100%;
+      
+      label {
+        flex: 0 0 120px;
+        color: var(--tron-cyan);
+        font-size: 0.8rem;
+        text-align: right;
+      }
+      .input-element { flex: 1; }
     }
+  }
+  .action-row {
+    margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex; justify-content: flex-end;
   }
 }

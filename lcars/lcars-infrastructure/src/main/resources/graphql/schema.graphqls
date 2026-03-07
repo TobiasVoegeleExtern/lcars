@@ -1,0 +1,72 @@
+# ==========================================
+# 1. ROOT OPERATIONS (Nur einmal erlaubt!)
+# ==========================================
+type Query {
+    getEntry(id: ID!): LcarsEntry
+    searchEntries(filter: LcarsFilterInput, offset: Int = 0, limit: Int = 50): LcarsEntryPage!
+}
+
+type Mutation {
+    createEntry(input: LcarsEntryInput!): LcarsEntry
+    updateEntry(id: ID!, input: LcarsEntryInput!): LcarsEntry
+    deleteEntry(id: ID!): Boolean
+}
+
+# ==========================================
+# 2. INPUT TYPES (Daten vom Frontend zum Backend)
+# ==========================================
+input LcarsFilterInput {
+    systemTag: String
+    collectionName: String
+    format: String
+    activeGlow: Boolean
+    createdAfter: String
+}
+
+input LcarsEntryInput {
+    systemTag: String!
+    icon: String
+    collectionName: String
+    format: String
+}
+
+# ==========================================
+# 3. OUTPUT TYPES (Daten vom Backend zum Frontend)
+# ==========================================
+type LcarsEntryPage {
+    items: [LcarsEntry!]!
+    totalElements: Int!
+    offset: Int!
+    limit: Int!
+    hasNext: Boolean!
+}
+
+type LcarsEntry {
+    identity: IdentityTrait
+    lifecycle: LifecycleTrait
+    classification: ClassificationTrait
+}
+
+# --- Die Traits (Composition) ---
+
+type IdentityTrait {
+    id: ID!
+    systemTag: String
+}
+
+type VisualTrait {
+    color: String
+    icon: String
+    activeGlow: Boolean
+}
+
+type LifecycleTrait {
+    created: String
+    createdBy: String
+    version: Int
+}
+
+type ClassificationTrait {
+    collectionName: String
+    format: String
+}

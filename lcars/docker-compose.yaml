@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # 1. Die Datenbank
+  mongodb:
+    image: mongo:latest
+    container_name: lcars-mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # 2. Das Web-UI für die Datenbank
+  mongo-express:
+    image: mongo-express:latest
+    container_name: lcars-mongo-express
+    restart: always
+    depends_on:
+      - mongodb
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: secret
+      ME_CONFIG_MONGODB_URL: mongodb://root:secret@mongodb:27017/
+      ME_CONFIG_BASICAUTH: false
+    ports:
+      - "8081:8081"
+
+  # 3. Dein Hexagonales Spring Boot Backend
+  lcars-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lcars-backend
+    restart: always
+    depends_on:
+      - mongodb
+    ports:
+      - "8080:8080"
+    environment:
+      # Hier injizieren wir die Docker-internen Verbindungsdaten
+      - MONGO_HOST=mongodb
+      - MONGO_PORT=27017
+      - MONGO_DB=lcars_db
+      - MONGO_USER=root
+      - MONGO_PASS=secret
+      - VIRTUAL_THREADS_ENABLED=true
+
+volumes:
+  mongo_data:

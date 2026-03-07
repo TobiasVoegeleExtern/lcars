@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 // 1. Klassische Imports ganz oben
 import { DashboardComponent } from './views/dashboard/DashboardComponent';
-// import { MediaDbComponent } from './pages/media-db/media-db';
+import { MediaDbComponent } from './views/mediadb/media-db';
 // import { ActionLogComponent } from './pages/action-log/action-log';
 
 export const routes: Routes = [
@@ -19,11 +19,11 @@ export const routes: Routes = [
     component: DashboardComponent 
   },
   
-//   // 3. Media Datenbank
-//   { 
-//     path: 'media', 
-//     component: MediaDbComponent 
-//   },
+  // 3. Media Datenbank
+  { 
+    path: 'media', 
+    component: MediaDbComponent 
+  },
   
 //   // 4. Action Logs
 //   { 

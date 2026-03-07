@@ -1,5 +1,5 @@
 /* =================================================================
-   LCARS-TRON CORE FRAME (32nd Century Refactor)
+   LCARS-TRON CORE FRAME (32nd Century Refactor - Overlay Mode)
 ================================================================= */
 
 :host {
@@ -15,16 +15,21 @@
   flex-direction: column;
   height: 100vh;
   width: 100vw;
-  background-color: var(--background-color, #02060a); // Echtes Tron-Schwarz
+  background-color: var(--background-color, #02060a);
   color: var(--text-color, #e0faff);
   font-family: 'Oswald', sans-serif;
   overflow: hidden;
+  position: relative; /* WICHTIG: Anchor für den absoluten Header */
 
-  /* --- HEADER AREA --- */
+  /* --- HEADER AREA (Jetzt ein schwebendes Overlay) --- */
   .lcars-header {
+    position: absolute; /* Zieht den Rahmen aus dem Flow, das Hauptfenster rutscht an den Top-Rand! */
+    top: 0; left: 0; right: 0;
+    z-index: 100;
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start; /* Zieht die Top-Bar bündig an die Oberkante des Elbows */
     padding: var(--lcars-gap) var(--lcars-gap) 0 var(--lcars-gap);
+    pointer-events: none; /* Klicks gehen durch den leeren Raum direkt ins 3D Canvas */
 
     .lcars-elbow-top-left {
       width: var(--lcars-sidebar-width);
@@ -32,6 +37,7 @@
       background: var(--tron-accent);
       border-radius: var(--lcars-radius) 0 0 0;
       box-shadow: -2px -2px 15px var(--tron-cyan-glow);
+      pointer-events: auto; /* Die physischen LCARS-Teile bleiben klickbar */
     }
 
     .lcars-top-bar {
@@ -43,6 +49,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      pointer-events: auto; /* Die Top-Bar bleibt klickbar */
       
       .system-title {
         color: #000;
@@ -60,13 +67,15 @@
     overflow: hidden;
     padding: 0 var(--lcars-gap);
 
-    /* --- SIDEBAR REFACTOR --- */
+    /* --- SIDEBAR --- */
     .lcars-sidebar {
       width: var(--lcars-sidebar-width);
       display: flex;
       flex-direction: column;
       gap: var(--lcars-gap);
-      padding-top: var(--lcars-gap);
+      /* WICHTIG: Drückt die Menü-Buttons so weit runter, dass sie unter dem 70px Elbow auftauchen */
+      padding-top: calc(70px + var(--lcars-gap) * 2);
+      z-index: 10;
 
       .lcars-nav-item {
         height: 45px;
@@ -80,7 +89,7 @@
         font-weight: 700;
         font-size: 0.85rem;
         transition: all var(--transition-speed);
-        clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%); // Tron-Schliff
+        clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
 
         &:hover { 
           filter: brightness(1.3); 
@@ -105,14 +114,17 @@
       }
     }
 
-    /* --- CONTENT AREA --- */
+    /* --- HAUPTFENSTER (Das 3D Canvas) --- */
     .lcars-content {
       flex: 1;
-      padding: 20px;
       position: relative;
       background: rgba(0, 0, 0, 0.3);
       margin-left: var(--lcars-gap);
       margin-bottom: var(--lcars-gap);
+      /* Das Padding-Top schiebt den reinen Text-Inhalt unter der Top-Bar hervor, 
+         während der Container (und der Grid-Hintergrund) bis auf Pixel 0 ganz oben reicht */
+      padding: calc(var(--lcars-bar-height) + 20px) 20px 20px 20px;
+      z-index: 1;
       
       &::before {
         content: '';
@@ -137,8 +149,8 @@
 
 /* --- 32nd CENTURY PROGRAMMABLE MATTER TOGGLE --- */
 .lcars-32nd-toggle {
-  margin: 15px 0;
-  padding: 12px;
+  margin: 0; /* Margin entfernt, damit es sauber in die flex-start Top-Bar passt */
+  padding: 4px 12px;
   background: rgba(255, 255, 255, 0.03);
   border-left: 4px solid var(--tron-cyan);
   backdrop-filter: blur(8px);
@@ -150,8 +162,8 @@
 
   .matter-fragments {
     position: relative;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     .fragment {
       position: absolute;
       background: var(--tron-cyan);
@@ -168,9 +180,9 @@
     .fragment {
       background: var(--tron-orange);
       box-shadow: 0 0 12px var(--tron-orange-glow);
-      &.f1 { transform: translate(4px, 12px) rotate(45deg); }
-      &.f2 { transform: translate(12px, -8px) scale(1.5); }
-      &.f3 { transform: rotate(-90deg) translate(5px, 5px); }
+      &.f1 { transform: translate(4px, 8px) rotate(45deg); }
+      &.f2 { transform: translate(8px, -4px) scale(1.5); }
+      &.f3 { transform: rotate(-90deg) translate(2px, 2px); }
     }
   }
 }

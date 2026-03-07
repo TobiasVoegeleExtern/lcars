@@ -1,0 +1,40 @@
+spring:
+  # Konfiguration für die Hexagonale Architektur & Java 21
+  main:
+    allow-bean-definition-overriding: false
+  
+  # Virtual Threads aktivieren (Java 21 Power)
+  threads:
+    virtual:
+      enabled: ${VIRTUAL_THREADS_ENABLED:true}
+
+  # MongoDB Anbindung
+
+     
+  mongodb:
+      host: ${MONGO_HOST:localhost}
+      port: ${MONGO_PORT:27017}
+      database: ${MONGO_DB:lcars_db}
+      username: ${MONGO_USER:root}
+      password: ${MONGO_PASS:secret}
+      authentication-database: admin
+      uuid-representation: standard
+     
+
+  # GraphQL Konfiguration
+  graphql:
+    graphiql:
+      enabled: ${GRAPHIQL_ENABLED:true}
+      path: /graphiql
+    # Zeigt detaillierte Fehler im Browser-Response (für Dev-Phase)
+    schema:
+      printer:
+        enabled: true
+
+# Quarkus-Style Logging: Macht das Backend gesprächig
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.graphql: DEBUG
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
