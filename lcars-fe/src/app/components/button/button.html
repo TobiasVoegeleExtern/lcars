@@ -1,0 +1,10 @@
+@if (isVisible()) {
+  <button 
+    class="custom-button" 
+    [ngClass]="'variant-' + variant" 
+    [class.is-disabled]="disabled"
+    [disabled]="disabled">
+    
+    <ng-content></ng-content>
+  </button>
+}

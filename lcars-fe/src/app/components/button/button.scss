@@ -1,0 +1,58 @@
+/* =================================================================
+   CUSTOM BUTTON - GLOBAL STYLES (Light & Tron Dark)
+   ================================================================= */
+
+.custom-button {
+  // Grundlegende Stile zurücksetzen
+  border: 1px solid transparent;
+  background-color: transparent;
+  cursor: pointer;
+
+  // Abstände und Schrift
+  padding: 6px 20px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit; // Schrift von body übernehmen
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  // Animationen
+  transition: all 0.2s ease-in-out;
+
+  /* === Zentrale Definition für Deaktivierung === */
+  &:disabled, &.is-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none; /* Verhindert Klicks und Hover-Effekte zuverlässig */
+    filter: grayscale(60%); /* Nimmt das Leuchten/Sättigung raus */
+    box-shadow: none !important; /* Deaktiviert den Neon-Glow / Schatten */
+    transform: none !important; /* Verhindert das "Heben" beim Hovern */
+    border-color: color-mix(in srgb, var(--border-color) 50%, transparent);
+    text-shadow: none; 
+  }
+}
+
+/* === Variante 1: Gefüllter Button === */
+.custom-button.variant-filled {
+  background-color: var(--primary-color);
+  color: var(--primary-color-text);
+  box-shadow: var(--shadow); // Nutzt den Standard-Schatten (Light) oder Glow (Dark)
+
+  &:hover {
+    background-color: var(--primary-color-hover);
+    transform: translateY(-2px); // Leichter "Heben"-Effekt beim Hovern
+  }
+}
+
+/* === Variante 2: Kontur-Button (Stroked) === */
+.custom-button.variant-stroked {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+
+  &:hover {
+    background-color: var(--primary-color);
+    color: var(--primary-color-text);
+    box-shadow: var(--shadow); // Schatten/Glow nur beim Hovern hinzufügen
+  }
+}

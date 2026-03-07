@@ -1,0 +1,46 @@
+<!-- <div class="toggle-switch-container" [class.disabled]="disabled()">
+  
+  <input
+    type="checkbox"
+    class="toggle-input"
+    [id]="uniqueId"
+    [checked]="checked()"
+    [disabled]="disabled()"
+    (change)="checked.set($any($event.target).checked)"
+  />
+  
+  <label class="toggle-label" [for]="uniqueId">
+    <span class="toggle-track">
+      <span class="toggle-thumb"></span>
+    </span>
+    
+    <span class="toggle-text" *ngIf="label()">{{ label() }}</span>
+  </label>
+  
+</div> -->
+
+<div class="toggle-switch-container" [class.disabled]="disabled()">
+  
+  <input
+    type="checkbox"
+    class="toggle-input"
+    [id]="uniqueId"
+    
+
+    [checked]="internalChecked()"
+    
+    [disabled]="disabled()"
+    
+
+    (change)="onInternalChange($any($event.target).checked)"
+  />
+  
+  <label class="toggle-label" [for]="uniqueId">
+    <span class="toggle-track">
+      <span class="toggle-thumb"></span>
+    </span>
+    
+    <span class="toggle-text" *ngIf="label()">{{ label() }}</span>
+  </label>
+  
+</div>

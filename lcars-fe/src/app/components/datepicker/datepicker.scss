@@ -1,0 +1,90 @@
+:host { display: block; width: 100%; }
+
+.datepicker-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-color-muted, #94a3b8);
+  text-transform: uppercase;
+}
+
+.input-wrapper {
+  background-color: var(--tron-card-bg, #0f172a);
+  border: 1px solid var(--tron-card-border, #1e293b);
+  border-radius: 12px;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  input {
+    background: transparent;
+    border: none;
+    color: var(--text-color, #f8fafc);
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+  }
+
+  &.active, &:hover {
+    border-color: var(--tron-cyan, #06b6d4);
+    box-shadow: 0 0 10px var(--tron-cyan-glow);
+  }
+}
+
+.calendar-dropdown {
+  position: absolute;
+  z-index: 1000;
+  margin-top: 8px;
+  background-color: var(--tron-card-bg, #0f172a);
+  border: 1px solid var(--tron-cyan);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 0 20px var(--tron-cyan-glow);
+  width: 280px;
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: var(--tron-cyan);
+    font-weight: bold;
+    text-transform: uppercase;
+    
+    button {
+      background: transparent;
+      border: none;
+      color: var(--tron-cyan);
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+
+    .day-cell {
+      padding: 8px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s;
+
+      &:hover {
+        background: rgba(6, 182, 212, 0.2);
+        color: var(--tron-cyan);
+      }
+
+      &.selected {
+        background: var(--tron-cyan);
+        color: #000;
+        box-shadow: 0 0 10px var(--tron-cyan-glow);
+      }
+    }
+  }
+}

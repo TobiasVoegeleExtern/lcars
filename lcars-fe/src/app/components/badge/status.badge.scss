@@ -1,0 +1,34 @@
+:host {
+  display: inline-flex; 
+  vertical-align: middle; 
+  line-height: 1;
+
+  margin-right: 0.35rem; 
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transition: all 0.2s ease-in-out;
+  
+
+  border: none;
+
+
+  &--on {
+    background-color: var(--status-on-glow);
+    box-shadow: 0 0 9px 1px var(--status-on-glow);
+  }
+
+  &--off {
+    background-color: var(--status-off-glow);
+    box-shadow: 0 0 9px 1px var(--status-off-glow);
+  }
+
+  &--warning {
+    background-color: var(--status-warning-glow);
+    box-shadow: 0 0 9px 1px var(--status-warning-glow);
+  }
+}
+

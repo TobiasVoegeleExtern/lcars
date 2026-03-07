@@ -1,0 +1,111 @@
+:host {
+  /* =========================================
+     LIGHT MODE 
+     ========================================= */
+  --tron-primary: #00bcd4;       
+  --tron-glow: rgba(0, 188, 212, 0.4);
+  --tron-text-color: #333333;
+  --tron-bg: transparent;
+
+  /* =========================================
+     DARK MODE 
+     ========================================= */
+  @media (prefers-color-scheme: dark) {
+    --tron-primary: #00ffff;       /* Hartes, helles Neon-Cyan */
+    --tron-glow: rgba(0, 255, 255, 0.7);
+    --tron-text-color: #e0e0e0;
+  }
+
+
+}
+
+.tron-loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--tron-bg);
+  padding: 2rem;
+}
+
+.tron-loader {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Gemeinsame Ring-Eigenschaften */
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+/* Äußerer Ring - dreht sich langsam im Uhrzeigersinn */
+.outer-ring {
+  width: 100%;
+  height: 100%;
+  border: 4px dashed var(--tron-primary);
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  box-shadow: 0 0 15px var(--tron-glow), inset 0 0 15px var(--tron-glow);
+  animation: spinOuter 4s linear infinite;
+}
+
+/* Innerer Ring - dreht sich schneller gegen den Uhrzeigersinn */
+.inner-ring {
+  width: 70%;
+  height: 70%;
+  border: 4px solid var(--tron-primary);
+  border-left-color: transparent;
+  border-right-color: transparent;
+  box-shadow: 0 0 10px var(--tron-glow), inset 0 0 10px var(--tron-glow);
+  animation: spinInner 2s linear infinite;
+}
+
+/* Pulsierender Kern in der Mitte */
+.core {
+  width: 20%;
+  height: 20%;
+  background-color: var(--tron-primary);
+  border-radius: 50%;
+  box-shadow: 0 0 20px var(--tron-primary);
+  animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+.tron-text {
+  margin-top: 1.5rem;
+  font-family: 'Courier New', Courier, monospace; 
+  font-size: 1.1rem;
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: var(--tron-text-color);
+  text-shadow: 0 0 8px var(--tron-glow);
+  animation: pulseText 1.5s ease-in-out infinite alternate;
+}
+
+/* =========================================
+   ANIMATIONEN
+   ========================================= */
+@keyframes spinOuter {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spinInner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 30px var(--tron-primary); }
+}
+
+@keyframes pulseText {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}

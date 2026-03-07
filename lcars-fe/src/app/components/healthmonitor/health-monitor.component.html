@@ -1,0 +1,44 @@
+    <app-accordion [multiple]="true">
+     
+      @for (env of environments; track env.title) {
+        
+        <app-accordion-item [isOpen]="isAccordionOpen(env)">
+     
+          <div accordion-title class="accordion-title-flex">
+        
+             <app-status-badge [status]="getOverallEnvStatus(env)"></app-status-badge>
+            <span>{{ env.title }}</span>
+              
+     
+              <!-- @if (getEnvironmentError(env); as errorDetails) {
+              <p class="env-error-details">
+                ({{ errorDetails }})
+              </p>
+            } -->
+          </div>
+          
+          <div accordion-content>
+                      
+            @for (check of env.checks; track check.title) {
+              <p>
+                 <app-status-badge [status]="getBadgeStatus(check.status)"></app-status-badge>
+                {{ check.title }}
+
+       
+                @if (check.status !== 'UP' && check.details) {
+                  <span class="check-details">
+                    - {{ check.details }}
+                  </span>
+                }
+              </p>
+            }
+          </div>
+        </app-accordion-item>
+      
+      } @empty {
+  
+        <p class="empty-state">Keine Umgebungen zum Überwachen konfiguriert.</p>
+      }
+
+    </app-accordion>
+

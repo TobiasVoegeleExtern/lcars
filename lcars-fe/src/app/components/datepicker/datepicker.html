@@ -1,0 +1,32 @@
+@if (label) {
+  <label class="datepicker-label">{{ label }}</label>
+}
+
+<div class="datepicker-container">
+  <div class="input-wrapper" (click)="toggleMenu()" [class.active]="isMenuOpen()">
+    <input type="text" [value]="formattedDate()" placeholder="DD.MM.YYYY" readonly>
+    <span class="calendar-icon">📅</span>
+  </div>
+
+  @if (isMenuOpen()) {
+    <div class="calendar-dropdown">
+      <div class="calendar-header">
+        <button (click)="changeMonth(-1)" type="button">«</button>
+        <span>{{ viewDate() | date:'MMMM yyyy':'':'de' }}</span>
+        <button (click)="changeMonth(1)" type="button">»</button>
+      </div>
+      <div class="calendar-grid">
+        <div class="weekday">MO</div><div class="weekday">DI</div><div class="weekday">MI</div>
+        <div class="weekday">DO</div><div class="weekday">FR</div><div class="weekday">SA</div><div class="weekday">SO</div>
+
+        @for (day of daysInMonth(); track day.getTime()) {
+  <div class="day-cell" 
+       [class.selected]="isSelected(day)"
+       (click)="selectDate(day); $event.stopPropagation()">
+    {{ day.getDate() }}
+  </div>
+}
+      </div>
+    </div>
+  }
+</div>

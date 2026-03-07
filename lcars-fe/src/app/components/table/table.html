@@ -1,0 +1,80 @@
+<div class="table-container">
+  <div class="search-bar">
+    <app-input placeholder="Suche..." [value]="searchQuery()" (valueChange)="searchQuery.set($event)" />
+  </div>
+
+  <table class="styled-table">
+    <thead>
+      <tr>
+        @for (h of headers; track h.key) {
+          <th [class.sortable]="h.sortable !== false" (click)="toggleSort(h.key)">
+            <div class="header-content">
+              {{ h.label }}
+              @if (sortKey() === h.key) {
+                <span class="sort-indicator">{{ sortDirection() === 'asc' ? '▲' : '▼' }}</span>
+              }
+            </div>
+          </th>
+        }
+        @if ((showActions && canPerformActions()) || showCopy) { <th>Aktionen</th> }
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (row of processedData(); track row) {
+        <tr [class.derezzing]="row.__isDerezzing" [class.rez-in]="row.__justRezzed">
+          @for (h of headers; track h.key) {
+            <td [class.editable]="isEditable(h.key)">
+              @if (!row.__isEditing || !isEditable(h.key)) {
+                @if (isToggleable(row[h.key])) {
+                  <app-toggle-switch [checked]="row[h.key]" [disabled]="true" />
+                } 
+                @else if (h.key === 'createdAt' || h.key === 'sentAt' || h.key === 'changedAt') {
+                  {{ row[h.key] | date: 'dd.MM.yyyy, HH:mm:ss' }}
+                }
+                @else { {{ row[h.key] }} }
+              } @else {
+                @if (isToggleable(row.__originalData ? row.__originalData[h.key] : row[h.key])) {
+                  <app-toggle-switch [checked]="row[h.key]" (checkedChange)="onToggleChange(row, h.key, $event)" />
+                } @else {
+                  <input [(ngModel)]="row[h.key]" (keyup.enter)="saveEdit(row)" (keyup.escape)="cancelEdit(row)" class="inline-edit-input" />
+                }
+              }
+            </td>
+          }
+          @if ((showActions && canPerformActions()) || showCopy) {
+            <td class="action-cell">
+              <div class="action-flex-container">
+                @if (showCopy) { <button (click)="copyRow(row)" class="action-button copy-button">Copy</button> }
+                
+                @if (showActions && canPerformActions()) {
+                  @if (!row.__isEditing) {
+                    @if (hasEditableColumns()) { <button (click)="startEdit(row)" class="action-button edit-button">Edit</button> }
+                    <button (click)="requestDelete(row)" class="action-button delete-button">Delete</button>
+                  } @else {
+                    <button (click)="saveEdit(row)" class="action-button save-button">Save</button>
+                    <button (click)="cancelEdit(row)" class="action-button cancel-button">X</button>
+                  }
+                }
+              </div>
+            </td>
+          }
+        </tr>
+      } @empty {
+        <tr><td [attr.colspan]="headers.length + (((showActions && canPerformActions()) || showCopy) ? 1 : 0)" class="no-data">Keine Programme im Grid gefunden.</td></tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (showConfirm()) {
+  <app-confirm-dialog
+    title="Programm Terminierung"
+    message="Bist du sicher, dass du dieses Programm aus dem Grid entfernen willst?"
+    confirmLabel="DEREZZ !"
+    cancelLabel="ABBRECHEN"
+    type="danger"
+    (confirm)="onConfirmDelete()"
+    (cancel)="onCancelDelete()"
+  ></app-confirm-dialog>
+}

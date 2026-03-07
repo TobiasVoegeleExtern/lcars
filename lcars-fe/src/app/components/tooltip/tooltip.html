@@ -1,0 +1,13 @@
+<div 
+  class="tooltip-container" 
+  [class]="'position-' + position">
+  
+  <ng-content></ng-content>
+  
+  <div 
+    class="tooltip-box" 
+    [class.visible]="isVisible()">
+    {{ text }}
+    <div class="tooltip-arrow"></div>
+  </div>
+</div>

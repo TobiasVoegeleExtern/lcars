@@ -1,0 +1,61 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.textarea-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-color-muted, #94a3b8);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.textarea-container {
+  width: 100%;
+  /* Nutzt die sanfte Transition deines Tron-Panels */
+  transition: all 0.3s ease; 
+}
+
+.styled-textarea {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 1rem;
+  font-family: 'JetBrains Mono', monospace; /* Passt besser zum Log-Charakter */
+  border-radius: 12px; /* Angeglichen an tron-panel-frame */
+  
+  /* Background & Border wie beim Panel */
+  background-color: var(--tron-card-bg, #0f172a);
+  border: 1px solid var(--tron-card-border, #1e293b);
+  color: var(--text-color, #f8fafc);
+  
+  outline: none;
+  resize: vertical;
+  min-height: 100px;
+  
+  /* Verwendet den Schatten deines Panels als Basis */
+  box-shadow: var(--tron-card-shadow);
+  transition: all 0.3s ease;
+
+  &::placeholder {
+    color: var(--text-color-muted);
+    opacity: 0.5;
+    font-style: italic;
+  }
+
+  /* Hover-Effekt wie beim Tron-Panel */
+  &:hover {
+    border-color: var(--tron-cyan, #06b6d4);
+    box-shadow: 0 0 10px var(--tron-cyan-glow, rgba(6, 182, 212, 0.3));
+  }
+}
+
+/* Aktiver Status (Fokus) - Verstärkter Glow wie beim Panel-Hover */
+.textarea-container.focused .styled-textarea {
+  border-color: var(--tron-cyan, #06b6d4);
+  background-color: rgba(6, 182, 212, 0.05); /* Leichter Cyan-Hauch im Hintergrund */
+  box-shadow: 0 0 15px var(--tron-cyan-glow, rgba(6, 182, 212, 0.5)),
+              inset 0 0 5px rgba(6, 182, 212, 0.1); /* Inner Glow Effekt */
+}

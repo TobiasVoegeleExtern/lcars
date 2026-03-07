@@ -1,0 +1,29 @@
+<div class="tron-terminal-container">
+  <app-card title="CODY LOG-TERMINAL (SECTOR_ACCESS)">
+    <div card-content>
+      
+      <div class="terminal-filter-bar">
+        <div class="picker-wrapper">
+          <app-date-picker 
+            label="SCAN_DATE" 
+            [value]="filterDate()" 
+            (valueChange)="filterDate.set($event)">
+          </app-date-picker>
+        </div>
+        <app-button variant="stroked" (click)="filterDate.set(null)">RESET_SCAN</app-button>
+      </div>
+
+      <div class="terminal-screen">
+        <app-textfield 
+          [rows]="25"
+          [value]="terminalOutput()"
+          [readOnly]="true" 
+          class="mcp-terminal-font">
+        </app-textfield>
+        
+        <div class="scanlines"></div>
+      </div>
+
+    </div>
+  </app-card>
+</div>

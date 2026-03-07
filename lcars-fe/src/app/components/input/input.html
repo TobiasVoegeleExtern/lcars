@@ -1,0 +1,15 @@
+@if (label) {
+  <label class="input-label">{{ label }}</label>
+}
+
+<div class="input-container" [class.focused]="isFocused()">
+  <input 
+    [type]="type"
+    [placeholder]="placeholder"
+    [value]="value"
+    (input)="onInputChange($event.target.value)"
+    (focus)="isFocused.set(true)"
+    (blur)="isFocused.set(false)"
+    class="styled-input"
+  />
+</div>

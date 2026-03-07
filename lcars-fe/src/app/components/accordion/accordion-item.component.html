@@ -1,0 +1,31 @@
+<div class="accordion-item" [class.open]="isOpen">
+
+  <!-- Der klickbare Header -->
+  <div class="accordion-header" (click)="onHeaderClick()">
+    
+    <!-- 
+      SLOT 1: Titel
+      Hier kommt alles rein, was in der Eltern-Komponente
+      das Attribut [accordion-title] trägt.
+    -->
+    <ng-content select="[accordion-title]"></ng-content>
+
+    <!-- Der Plus/Minus-Indikator -->
+    <span class="accordion-indicator"></span>
+  </div>
+
+  <!-- Der animierte Content-Wrapper -->
+  <div class="accordion-content-wrapper">
+    <div class="accordion-content-inner">
+      
+      <!-- 
+        SLOT 2: Inhalt
+        Hier kommt alles rein, was in der Eltern-Komponente
+        das Attribut [accordion-content] trägt.
+      -->
+      <ng-content select="[accordion-content]"></ng-content>
+
+    </div>
+  </div>
+
+</div>

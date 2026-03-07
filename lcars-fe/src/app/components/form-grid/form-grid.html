@@ -1,0 +1,38 @@
+<div class="form-layout-wrapper" 
+     [class.tron-panel-frame]="variant === 'panel'" 
+     [class.vertical-form]="layout === 'stacked'"
+     [class.grid-form]="layout === 'grid'"
+     [class.access-denied]="isDisabled()"
+     (mouseenter)="isHovered.set(true)"
+     (mouseleave)="isHovered.set(false)"> 
+  
+  <div class="title-wrapper">
+
+    @if (isDisabled() && isHovered()) {
+      <h3 class="permission-warning-title">
+        🚫 Keine Terminal Berechtigung
+      </h3>
+    }
+    
+    <div [style.display]="(isDisabled() && isHovered()) ? 'none' : 'block'">
+      <ng-content select="[form-title]"></ng-content>
+    </div>
+  </div>
+  
+  <fieldset [disabled]="isDisabled()" class="security-fieldset">
+    
+    <div class="inputs-container">
+      <ng-content select="[form-inputs]"></ng-content>
+    </div>
+
+    <div class="action-row">
+      <div class="action-spacer" [style.display]="layout === 'stacked' ? 'block' : 'none'"></div>
+
+      <div class="action-buttons">
+        <ng-content select="[form-actions]"></ng-content>
+      </div>
+    </div>
+    
+  </fieldset>
+  
+</div>

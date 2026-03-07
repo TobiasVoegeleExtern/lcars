@@ -1,0 +1,97 @@
+/* =================================================================
+                  TRON TERMINAL - ROUNDED & COMPACT
+   ================================================================= */
+
+.tron-terminal-container {
+  .terminal-filter-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border: 1px solid var(--tron-card-border);
+    background: rgba(6, 182, 212, 0.05);
+    border-radius: var(--accordion-border-radius); 
+
+    .picker-wrapper {
+      width: 200px; 
+      
+      ::ng-deep .datepicker-input-container {
+ 
+        max-width: 100%;
+      }
+    }
+  }
+
+  .terminal-screen {
+    position: relative;
+    box-shadow: inset 0 0 20px var(--tron-cyan-glow);
+    border: 1px solid var(--tron-card-border);
+    border-radius: var(--accordion-border-radius);
+    background-color: var(--tron-bg);
+    overflow: hidden; 
+  }
+
+  .mcp-terminal-font {
+    position: relative;
+
+    ::ng-deep textarea {
+      font-family: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', monospace !important;
+      background-color: transparent !important;
+      color: var(--tron-cyan) !important;
+      text-shadow: 0 0 5px var(--tron-cyan-glow);
+      border: none !important;
+      border-radius: var(--accordion-border-radius) !important;
+      font-size: 0.85rem !important;
+      line-height: 1.6 !important;
+      padding: 1.5rem !important;
+      resize: none !important;
+      scrollbar-width: thin;
+      scrollbar-color: var(--tron-cyan) transparent;
+      
+      &:focus {
+        outline: none;
+      }
+    }
+
+
+    &::after {
+      content: "_";
+      position: absolute;
+      bottom: 22px;
+      left: 22px;
+      color: var(--tron-cyan);
+      font-weight: bold;
+      animation: terminal-cursor-blink 1s step-end infinite;
+      pointer-events: none;
+    }
+  }
+}
+
+
+.scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  border-radius: var(--accordion-border-radius);
+  opacity: var(--tron-grid-opacity);
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.2) 50%
+  ), 
+  linear-gradient(
+    90deg, 
+    rgba(255, 0, 0, 0.03), 
+    rgba(0, 255, 0, 0.01), 
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 4px, 3px 100%;
+}
+
+@keyframes terminal-cursor-blink {
+  from, to { opacity: 1; }
+  50% { opacity: 0; }
+}

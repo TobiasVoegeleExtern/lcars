@@ -1,0 +1,16 @@
+<div class="tabs-container">
+  
+  <!-- Tab-Kopfzeile (Navigation) -->
+  <nav class="tab-header">
+    <button 
+      *ngFor="let tab of tabs"
+      [class.active]="activeKey() === tab.key"
+      (click)="setActive(tab.key)">
+      {{ tab.label }}
+    </button>
+  </nav>
+
+  <!-- Der Inhalt wird jetzt direkt hier projiziert, ohne zusätzlichen Wrapper -->
+  <ng-content></ng-content>
+  
+</div>

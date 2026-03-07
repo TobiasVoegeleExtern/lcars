@@ -1,0 +1,110 @@
+/* * Diese Styles gelten nur für das AccordionItem.
+ * Sie verwenden die globalen CSS-Variablen (z.B. --surface-color).
+ */
+
+:host {
+  /* KORREKTUR: Die Fallbacks wurden entfernt.
+    Die Komponente erbt jetzt die Variablen von :root oder body.dark-theme
+  */
+  display: block;
+}
+
+.accordion-item {
+  border: 1px solid var(--border-color);
+  border-radius: var(--accordion-border-radius);
+  overflow: hidden;
+  background-color: var(--surface-color);
+  transition: background-color var(--accordion-transition-speed), border-color var(--accordion-transition-speed);
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--accordion-header-padding);
+  cursor: pointer;
+  user-select: none;
+  font-weight: var(--accordion-header-font-weight);
+  transition: background-color var(--accordion-transition-speed);
+  
+  &:hover {
+    background-color: var(--light-bg);
+  }
+}
+
+.accordion-indicator {
+  width: 16px;
+  height: 16px;
+  position: relative;
+  transition: transform var(--accordion-transition-speed) ease;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    background-color: var(--text-color);
+    transition: transform var(--accordion-transition-speed) ease, 
+                opacity var(--accordion-transition-speed) ease, 
+                background-color var(--accordion-transition-speed);
+  }
+
+  // Horizontale Linie
+  &::before {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    margin-top: -1px;
+  }
+
+  // Vertikale Linie
+  &::after {
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    margin-left: -1px;
+  }
+}
+
+/* Styling für den "Offen"-Zustand */
+.accordion-item.open {
+  .accordion-indicator {
+    &::after {
+      transform: rotate(90deg);
+      opacity: 0;
+    }
+  }
+}
+
+/* CSS-Grid-Animation für das Öffnen/Schließen */
+.accordion-content-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--accordion-transition-speed) ease-in-out;
+}
+
+.accordion-content-inner {
+  overflow: hidden;
+  padding: 0 var(--accordion-content-padding);
+  transition: padding var(--accordion-transition-speed) ease-in-out;
+
+  > *:first-child {
+    margin-top: 0;
+  }
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Wenn offen, animiere die Höhe */
+.accordion-item.open .accordion-content-wrapper {
+  grid-template-rows: 1fr;
+}
+
+/* Wenn offen, füge Padding unten hinzu */
+.accordion-item.open .accordion-content-inner {
+  padding-top: 0;
+  padding-bottom: var(--accordion-content-padding);
+}
+

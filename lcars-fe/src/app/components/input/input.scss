@@ -1,0 +1,51 @@
+/* Macht die Host-Komponente zu einem Block, der 100% des verfügbaren Platzes nutzt */
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* Standard-Styling für das Label (Label oben) */
+.input-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.input-container {
+  display: block;
+  width: 100%; 
+  /* Keine harten margins oder max-widths mehr hier! Das regelt das Grid. */
+}
+
+.styled-input {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border-radius: var(--border-radius, 5px);
+  outline: none;
+  transition: all 0.3s ease-in-out;
+
+  /* Farben aus dem globalen Theme */
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  
+  /* Styling für den Platzhalter */
+  &::placeholder {
+    color: var(--text-color-muted);
+    opacity: 0.7;
+  }
+}
+
+/* Fokus-Stil (Glow-Effekt) */
+.input-container.focused .styled-input {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-color-hover);
+}
+
+/* Anpassung der Hover-Farbe für Edeka/Light Mode */
+:not(body.dark-theme) .styled-input:hover {
+  border-color: var(--primary-color); 
+}

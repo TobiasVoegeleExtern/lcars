@@ -1,0 +1,89 @@
+/* Basis-Container: Ermöglicht relative Positionierung der Box */
+:host {
+  display: inline-block;
+  position: relative;
+  /* Stellt sicher, dass mouseenter/mouseleave nur auf dem Host-Element reagieren */
+  cursor: default; 
+}
+
+/* Der eigentliche Tooltip-Kasten */
+.tooltip-box {
+  position: absolute;
+  z-index: 9999;
+  padding: 8px 12px;
+  border-radius: var(--border-radius, 4px);
+  font-size: 0.85rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+  
+  /* Standard-Farben (Inverse Farben für Lesbarkeit) */
+  background-color: var(--text-color);
+  color: var(--surface-color);
+}
+
+/* Sichtbarer Zustand */
+.tooltip-box.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* --- TRON GLOW im Dark Mode --- */
+body.dark-theme .tooltip-box {
+  // Im Dark Mode invertieren wir die Farben nicht, sondern verwenden
+  // eine leichte Surface-Farbe und fügen den Primär-Glow hinzu.
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  box-shadow: 0 0 5px var(--primary-color-hover);
+  border: 1px solid var(--border-color);
+}
+
+/* --- Positionierung --- */
+
+.tooltip-container {
+  position: relative;
+  height: 100%;
+}
+
+.tooltip-box {
+  // Default: Position Top
+  top: auto;
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+}
+
+.tooltip-box.visible {
+  // Beim Erscheinen leicht verschieben
+  transform: translateX(-50%) translateY(0);
+}
+
+.position-bottom .tooltip-box {
+  top: calc(100% + 10px);
+  transform: translateX(-50%) translateY(-5px);
+}
+
+.position-bottom .tooltip-box.visible {
+  transform: translateX(-50%) translateY(0);
+}
+
+.position-left .tooltip-box {
+  top: 50%;
+  right: calc(100% + 10px);
+  left: auto;
+  transform: translateY(-50%) translateX(5px);
+}
+
+.position-left .tooltip-box.visible {
+  transform: translateY(-50%) translateX(0);
+}
+
+.position-right .tooltip-box {
+  top: 50%;
+  left: calc(100% + 10px);
+  transform: translateY(-50%) translateX(-5px);
+}
+
+.position-right .tooltip-box.visible {
+  transform: translateY(-50%) translateX(0);
+}

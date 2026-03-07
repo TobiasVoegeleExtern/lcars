@@ -1,0 +1,7 @@
+<div class="alert" [class]="alertClass" role="alert">
+  
+  <span *ngIf="message">{{ message }}</span>
+  
+  <ng-content *ngIf="!message"></ng-content>
+  
+</div>

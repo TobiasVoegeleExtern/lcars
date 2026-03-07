@@ -1,0 +1,96 @@
+/* =================================================================
+  Toggle Switch SCSS
+  Nutzt globale CSS-Variablen für Dark-/Light-Mode-Kompatibilität
+ ================================================================= */
+
+:host {
+
+  --toggle-width: 50px;
+  --toggle-height: 28px;
+  --toggle-thumb-size: 22px;
+  --toggle-padding: 3px;
+  
+  // --- FARB-DEFINITIONEN (Jetzt Theme-kompatibel) ---
+
+  
+  --toggle-bg-off: var(--text-color-muted);
+  
+
+  --toggle-bg-on: var(--primary-color);
+  
+  
+  --toggle-thumb-color: var(--background-color);
+  
+
+  --toggle-bg-disabled: var(--border-color);
+  --toggle-thumb-disabled: var(--text-color-muted);
+
+
+  display: inline-block;
+}
+
+
+.toggle-switch-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.toggle-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.toggle-text {
+  margin-left: 10px;
+  user-select: none;
+}
+
+.toggle-track {
+  display: block;
+  position: relative;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  background-color: var(--toggle-bg-off);
+  border-radius: var(--toggle-height);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.toggle-thumb {
+  display: block;
+  position: absolute;
+  width: var(--toggle-thumb-size);
+  height: var(--toggle-thumb-size);
+  background-color: var(--toggle-thumb-color);
+  border-radius: 50%;
+  top: var(--toggle-padding);
+  left: var(--toggle-padding);
+  transition: left 0.2s ease-in-out;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.toggle-input:checked + .toggle-label {
+  .toggle-track {
+    background-color: var(--toggle-bg-on);
+  }
+  
+  .toggle-thumb {
+    left: calc(var(--toggle-width) - var(--toggle-thumb-size) - var(--toggle-padding));
+  }
+}
+
+.toggle-input:disabled + .toggle-label {
+   .toggle-track {
+     background-color: var(--toggle-bg-disabled);
+   }
+   .toggle-thumb {
+     background-color: var(--toggle-thumb-disabled);
+   }
+}

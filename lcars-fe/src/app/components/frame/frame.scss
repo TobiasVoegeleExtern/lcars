@@ -1,0 +1,310 @@
+// =================================================================
+// EINSTELLUNGEN & VARIABLEN
+// =================================================================
+:host {
+  --header-height: 70px;
+  --sidebar-width: 240px;
+  --transition-speed: 0.3s;
+
+  
+  --tron-accent: #00706c;       
+  --tron-text-strong: #004d4a; 
+  --tron-divider-color: rgba(0, 112, 108, 0.4);
+  --bit-yes-color: #00fff2;     
+  --bit-no-color: #ff4400;
+}
+
+
+:host-context(.dark-theme) {
+  --tron-accent: #00fff2;      
+  --tron-text-strong: #00fff2;
+  --tron-divider-color: rgba(0, 255, 242, 0.5);
+  --bit-yes-glow: 0 0 10px #00fff2, 0 0 20px #00fff2, 0 0 30px rgba(0, 255, 242, 0.5);
+  --bit-no-glow: 0 0 10px #ff4400, 0 0 25px #ff4400, 0 0 40px rgba(255, 68, 0, 0.4);
+}
+// =================================================================
+// BASIS-LAYOUT
+// =================================================================
+.frame-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden; 
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.frame-main-area {
+  display: flex;
+  flex: 1; 
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.frame-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto; 
+}
+
+// =================================================================
+// HEADER & CONTROLS
+// =================================================================
+.frame-header {
+  height: var(--header-height);
+  background-color: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 1003; 
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+.header-logo {
+  max-height: calc(var(--header-height) - 20px);
+  width: auto;
+  display: block;   
+}
+
+/* Container für User & BIT */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0 12px;     
+  height: 48px;      
+  border-radius: 4px;
+  border: 1px solid var(--tron-divider-color);
+  overflow: visible;  
+}
+
+
+
+/* User Sektion ( */
+.user-section {
+  display: flex;
+  align-items: center;
+  height: 100%;  
+  gap: 8px;
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+
+  .user-label {
+    color: var(--tron-accent);
+    opacity: 0.7;
+    font-size: 0.7rem;
+    font-weight: 500;
+  }
+
+  .user-name {
+    color: var(--tron-text-strong); 
+    letter-spacing: 0.5px;
+     line-height: 1;
+  }
+
+  &:hover {
+    filter: drop-shadow(0 0 3px var(--tron-accent));
+  }
+
+
+  .user-label {
+    color: var(--tron-cyan);
+    opacity: 0.5;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+  }
+
+  .user-name {
+    color: var(--tron-cyan);
+    font-weight: 700;
+  }
+}
+
+/* Tron Trenner */
+.tron-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--tron-divider-color);
+  box-shadow: 0 0 4px var(--tron-divider-color);
+}
+
+.bit-container {
+  width: 50px;
+  height: 50px;
+  perspective: 400px; // Erzeugt die 3D-Tiefe
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.bit-3d-scene {
+  width: 20px;
+  height: 20px;
+  transform-style: preserve-3d;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: bitRotate 4s infinite linear;
+
+  &.is-no {
+    // Wenn Dark Mode (NO), wird es stacheliger/aggressiver durch Skalierung
+    transform: scale(1.2);
+    .face {
+      background: rgba(255, 68, 0, 0.7);
+      border-color: #ff4400;
+      box-shadow: 0 0 15px #ff4400;
+    }
+  }
+}
+
+.bit-shape {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+
+  .face {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: rgba(0, 255, 242, 0.4);
+    border: 1px solid #00fff2;
+    box-shadow: 0 0 10px rgba(0, 255, 242, 0.5);
+  
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+
+    @for $i from 1 through 4 {
+      &:nth-child(#{$i}) {
+        transform: rotateY($i * 90deg) rotateX(35deg) translateZ(6px);
+      }
+    }
+    @for $i from 5 through 8 {
+      &:nth-child(#{$i}) {
+        transform: rotateY($i * 90deg) rotateX(-35deg) translateZ(6px) rotateZ(180deg);
+      }
+    }
+  }
+}
+
+@keyframes bitRotate {
+  from { transform: rotateY(0deg) rotateX(20deg); }
+  to { transform: rotateY(360deg) rotateX(20deg); }
+}
+
+// =================================================================
+// SIDEBAR & NAVIGATION
+// =================================================================
+.frame-sidebar {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background-color: var(--surface-color);
+  transform: translateX(-100%);
+  transition: transform var(--transition-speed) ease-in-out;
+  z-index: 1002;
+  display: flex;
+  flex-direction: column;
+
+  &.open { transform: translateX(0); box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3); }
+
+  ul { list-style: none; padding: 20px 0; margin: 0; }
+
+  li a {
+    display: block;
+    padding: 15px 25px;
+    color: var(--text-color-muted);
+    text-decoration: none;
+    transition: all var(--transition-speed);
+
+    &:hover, &.active-link { 
+      background-color: var(--primary-color);
+      color: var(--primary-color-text);
+      box-shadow: inset 4px 0 0 var(--tron-cyan);
+    }
+  }
+
+  .service-selector {
+    padding: 20px 15px;
+    border-bottom: 1px solid var(--border-color);
+  }
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: var(--header-height);
+  left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-speed);
+  z-index: 1001;
+  &.active { opacity: 1; visibility: visible; }
+}
+
+.menu-toggle {
+  display: flex; 
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px; height: 20px;
+  background: transparent; border: none;
+  cursor: pointer;
+  span {
+    width: 30px; height: 2px;
+    background: var(--tron-cyan);
+    box-shadow: 0 0 5px var(--tron-cyan);
+    transition: all var(--transition-speed);
+  }
+}
+
+// =================================================================
+// ANIMATIONEN
+// =================================================================
+@keyframes bitPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+@keyframes bitRotateNo {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// =================================================================
+// DESKTOP ADAPTION
+// =================================================================
+@media (min-width: 768px) {
+  .menu-toggle, .sidebar-overlay { display: none; }
+  .frame-sidebar {
+    position: sticky;
+    top: var(--header-height);
+    height: calc(100vh - var(--header-height)); 
+    transform: none;
+    border-right: 1px solid var(--border-color);
+  }
+}
+
+.frame-footer {
+  height: var(--footer-height);
+  background-color: var(--surface-color);
+  color: var(--text-color-muted);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}

@@ -1,0 +1,123 @@
+/* Macht die Komponente zu einem flexiblen Block */
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* Standard-Styling für das Label (Label oben, falls nicht im Grid) */
+.dropdown-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+/* Basis-Container */
+.dropdown-container {
+  position: relative;
+  display: block; /* War vorher inline-block */
+  width: 100%;
+  font-family: var(--font-family); 
+}
+
+/* Header (Button) */
+.dropdown-header {
+  width: 100%;
+  /* min-width: 200px; <-- Kannst du entfernen, das regelt jetzt das Grid */
+  padding: 10px 15px;
+  border-radius: var(--border-radius, 5px);
+  cursor: pointer;
+  
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  
+  &:hover {
+    box-shadow: 0 0 5px var(--primary-color);
+  }
+}
+
+/* ... der Rest bleibt gleich (.arrow, .dropdown-menu, .dropdown-item) ... */
+/* Basis-Container */
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-family); /* Annahme: globale Font-Variable */
+}
+
+/* Header (Button) */
+.dropdown-header {
+  width: 100%;
+  min-width: 200px;
+  padding: 10px 15px;
+  border-radius: var(--border-radius, 5px);
+  cursor: pointer;
+  
+  /* Styling mit Theme-Variablen */
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  
+  &:hover {
+    box-shadow: 0 0 5px var(--primary-color);
+  }
+}
+
+.arrow {
+  margin-left: 10px;
+  transition: transform 0.2s;
+  
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
+/* Menü-Liste */
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* Direkt unter dem Header */
+  left: 0;
+  z-index: 1000;
+  list-style: none;
+  margin: 5px 0 0 0;
+  padding: 0;
+  width: 100%;
+  max-height: 250px;
+  overflow-y: auto;
+
+  /* Styling mit Theme-Variablen */
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius, 5px);
+  box-shadow: var(--shadow);
+}
+
+/* Einzelnes Listenelement */
+.dropdown-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  
+  &:hover {
+    /* Akzentfarbe für Hover */
+    background-color: var(--primary-color-hover);
+    color: var(--primary-color-text); 
+  }
+  
+  &.selected {
+    /* Aktives Element */
+    background-color: var(--primary-color);
+    color: var(--primary-color-text);
+  }
+}

@@ -1,0 +1,150 @@
+/* =========
+   ACCORDION STYLES
+   (Angepasst an globale Light/Dark-Mode Variablen)
+   ========= */
+
+.accordion-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; 
+}
+
+.accordion-item {
+
+  border: 1px solid var(--border-color);
+  border-radius: 4px; 
+  overflow: hidden;
+
+  background-color: var(--surface-color);
+
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px; 
+    cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+
+  transition: background-color 0.2s;
+  
+  &:hover {
+  
+    background-color: var(--light-bg);
+  }
+}
+
+/* * Der Indikator (Pfeil/Plus)
+ */
+.accordion-indicator {
+  width: 16px;
+  height: 16px;
+  position: relative;
+  transition: transform 0.3s ease;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+  
+    background-color: var(--text-color);
+ 
+    transition: transform 0.3s ease, top 0.3s ease, opacity 0.3s ease, background-color 0.2s;
+  }
+
+  // Horizontale Linie
+  &::before {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    margin-top: -1px;
+  }
+
+  // Vertikale Linie
+  &::after {
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    margin-left: -1px;
+  }
+}
+
+/* * Styling für den "Offen"-Zustand
+ */
+.accordion-item.open {
+  .accordion-indicator {
+    // Rotiert das '+' zu einem '-' (durch Ausblenden der vertikalen Linie)
+    &::after {
+      transform: rotate(90deg);
+      opacity: 0;
+    }
+  }
+}
+
+// Chevron statt button 
+
+.accordion-indicator {
+  border: solid var(--text-color); 
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+  transition: transform 0.3s ease, border-color 0.2s; 
+}
+.accordion-item.open .accordion-indicator {
+  transform: rotate(-135deg); 
+}
+
+
+
+/* * * Animiert die Höhe von 0 auf "auto".
+ */
+.accordion-content-wrapper {
+  display: grid;
+  grid-template-rows: 0fr; // Standard: geschlossen
+  transition: grid-template-rows 0.3s ease-in-out;
+}
+
+.accordion-content-inner {
+  overflow: hidden;
+  // Links/Rechts-Padding ist immer da
+  padding: 0 16px;
+  // Sanfter Übergang für Padding-Animation
+  transition: padding 0.3s ease-in-out;
+
+  // Entfernt störende Margins vom Inhalt
+  > *:first-child {
+    margin-top: 0;
+  }
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* KORRIGIERTE STRUKTUR: 
+ * Diese Regeln müssen auf derselben Ebene sein wie .accordion-content-wrapper
+ */
+
+/* Wenn offen, setze 1fr Höhe */
+.accordion-item.open .accordion-content-wrapper {
+  grid-template-rows: 1fr;
+}
+
+/* Wenn offen, füge Padding unten hinzu (Padding oben ist 0) */
+.accordion-item.open .accordion-content-inner {
+  padding-top: 0;
+  padding-bottom: 16px;
+}
+
+/* Wenn geschlossen (Initialzustand), setze Padding auf 0 */
+.accordion-content-wrapper:not(.accordion-item.open .accordion-content-wrapper) {
+  .accordion-content-inner {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}

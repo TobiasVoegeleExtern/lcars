@@ -1,0 +1,50 @@
+/* Styling für die Tab-Komponente, nutzt globale Theme-Variablen */
+
+.tabs-container {
+  width: 100%;
+}
+  
+.tab-header {
+  display: flex;
+  border-bottom: 2px solid var(--border-color); /* Untere Trennlinie */
+  margin-bottom: 1.5rem; /* Etwas mehr Abstand zum Inhalt */
+}
+
+button {
+  background: transparent;
+  border: none;
+  padding: 10px 15px;
+  margin-right: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--text-color-muted);
+  position: relative;
+  transition: all 0.2s;
+
+  &.active {
+    color: var(--primary-color);
+    font-weight: bold;
+    
+    // Unterstrich/Indikator-Effekt
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; /* Positioniert auf der border-bottom */
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--primary-color);
+      box-shadow: 0 0 5px var(--primary-color);
+      transition: width 0.3s;
+    }
+  }
+  
+  &:hover:not(.active) {
+    color: var(--primary-color-hover);
+  }
+}
+
+.tab-content-area {
+  /* Dieses Styling wird nicht mehr benötigt, da der Inhalt direkt projiziert wird. */
+  /* Das Padding wird durch den Abstand der Cards selbst geregelt. */
+}

@@ -1,0 +1,65 @@
+
+:host {
+
+  display: block;
+}
+
+.alert {
+  position: relative;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 8px; 
+  font-size: 0.95rem;
+  line-height: 1.4;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.alert--primary {
+  color: var(--primary-color-text);
+  background-color: var(--primary-color);
+  border-color: var(--primary-color-hover);
+}
+
+.alert--secondary {
+  color: var(--text-color);
+  background-color: var(--surface-color);
+  border-color: var(--border-color);
+}
+
+.alert--success {
+  color: var(--success-text);
+  background-color: var(--success-bg);
+  border-color: var(--success-border);
+}
+
+.alert--danger {
+  color: var(--danger-text);
+  background-color: var(--danger-bg);
+  border-color: var(--danger-border);
+}
+
+.alert--warning {
+  color: var(--warning-text);
+  background-color: var(--warning-bg);
+  border-color: var(--warning-border);
+}
+
+.alert--info {
+  color: var(--info-text);
+  background-color: var(--info-bg);
+  border-color: var(--info-border);
+}
+
+.alert--light {
+  color: var(--light-text);
+  background-color: var(--light-bg);
+  border-color: var(--light-border);
+}
+
+.alert--dark {
+  color: var(--dark-text);
+  background-color: var(--dark-bg);
+  border-color: var(--dark-border);
+}
+

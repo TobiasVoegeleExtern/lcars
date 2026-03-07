@@ -1,0 +1,24 @@
+@if (label) {
+  <label class="dropdown-label">{{ label }}</label>
+}
+
+<div class="dropdown-container">
+  <button type="button" class="dropdown-header" (click)="toggleMenu()">
+    <span class="selected-name">
+      {{ selectedItem ? selectedItem.name : 'Bitte wählen...' }}
+    </span>
+    <span class="arrow" [class.open]="isMenuOpen">&#9662;</span>
+  </button>
+
+  @if (isMenuOpen) {
+    <ul class="dropdown-menu">
+      @for (item of items; track item.id) {
+        <li class="dropdown-item" 
+            [class.selected]="item.id === selectedItem?.id"
+            (click)="selectItem(item)">
+          {{ item.name }}
+        </li>
+      }
+    </ul>
+  }
+</div>

@@ -1,0 +1,226 @@
+/* =======================================================
+   TITLE
+   ======================================================= */
+.title-wrapper {
+  display: block; 
+  margin-bottom: 3rem; 
+  min-height: 28px; /* Verhindert Layout-Sprünge beim Text-Tausch */
+
+  ::ng-deep [form-title] {
+    display: block;
+    margin-bottom: 0 !important; 
+    line-height: 1.4;
+  }
+
+  /* Der dynamisch ausgetauschte Titel beim Hover */
+  .permission-warning-title {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--tron-red, #ff003c); // Fallback-Rot, falls die Variable fehlt
+    text-shadow: 0 0 8px var(--tron-red-glow, rgba(255, 0, 60, 0.6));
+    animation: tron-glitch-text 0.3s ease-in-out;
+  }
+}
+
+/* =======================================================
+   SECURITY: FIELDSET WRAPPER
+   ======================================================= */
+.security-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-width: 0; 
+  width: 100%;
+
+  &:disabled {
+    opacity: 0.6;
+    pointer-events: none; 
+    filter: grayscale(30%); 
+  }
+}
+
+/* =======================================================
+   TRON PANEL FRAME
+   ======================================================= */
+.tron-panel-frame {
+  background-color: var(--tron-card-bg);
+  border: 1px solid var(--tron-card-border);
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: var(--tron-card-shadow);
+  color: var(--tron-text);
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  max-width: 900px;
+  position: relative; 
+  overflow: hidden;
+
+  /* Normaler Hover-Effekt (wenn man Rechte hat) */
+  &:not(.access-denied):hover {
+    border-color: var(--tron-cyan);
+    box-shadow: 0 0 15px var(--tron-cyan-glow);
+  }
+
+  ::ng-deep [form-title] {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--tron-cyan);
+    text-shadow: 0 0 8px var(--tron-cyan-glow);
+  }
+}
+
+/* =======================================================
+   ACCESS DENIED & GLITCH EFFECT
+   ======================================================= */
+@keyframes tron-glitch {
+  0% { transform: translate(0) }
+  20% { transform: translate(-2px, 2px) }
+  40% { transform: translate(-2px, -2px) }
+  60% { transform: translate(2px, 2px) }
+  80% { transform: translate(2px, -2px) }
+  100% { transform: translate(0) }
+}
+
+@keyframes tron-glitch-text {
+  0% { opacity: 0; transform: translateY(-5px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scanline {
+  0% { top: -10%; opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.5; }
+  100% { top: 110%; opacity: 0; }
+}
+
+.access-denied {
+  cursor: not-allowed;
+
+  /* Stör-Border beim Hovern */
+  &:hover {
+    border-color: var(--tron-red);
+    box-shadow: 0 0 15px var(--tron-red-glow), inset 0 0 20px var(--tron-red-glow);
+    animation: tron-glitch 0.2s cubic-bezier(.25, .46, .45, .94) both infinite;
+  }
+
+  /* Scanline-Effekt  */
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--tron-red);
+    box-shadow: 0 0 10px var(--tron-red);
+    opacity: 0;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  &:hover::before {
+    animation: scanline 1.5s linear infinite;
+  }
+}
+
+/* =======================================================
+   LAYOUT: STACKED
+   ======================================================= */
+.vertical-form {
+  display: flex;
+  flex-direction: column;
+
+  .inputs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    ::ng-deep app-input,
+    ::ng-deep app-dropdown,
+    ::ng-deep app-checkbox,
+    ::ng-deep app-textfield,
+    ::ng-deep app-date-picker, 
+    ::ng-deep .custom-select-wrapper {
+      display: flex;
+      align-items: center; 
+      gap: 2.5rem;
+      width: 100%;
+
+      &[label=""], &:not([label]) {
+        &:before {
+          content: "";
+          flex: 0 0 200px; 
+          display: block;
+        }
+      }
+
+      label:not(.checkbox-wrapper) {
+        flex: 0 0 200px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-color-muted);
+        text-align: right;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 0;
+      }
+
+      input, 
+      select, 
+      .dropdown-container, 
+      .checkbox-wrapper {
+        flex: 1;
+        max-width: 450px;
+        width: 100%;
+      }
+
+      .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-left: 0; 
+      }
+    }
+  }
+
+  .action-row {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem; 
+    margin-top: 1.5rem;
+
+    .action-spacer {
+      flex: 0 0 200px; 
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+}
+
+/* =======================================================
+   LAYOUT: GRID
+   ======================================================= */
+.grid-form {
+  .inputs-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 300px));
+    gap: 15px;
+    align-items: flex-end;
+  }
+
+  .action-row {
+    margin-top: 20px;
+    
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+}

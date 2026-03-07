@@ -1,0 +1,15 @@
+@if (label) {
+  <label class="textarea-label">{{ label }}</label>
+}
+<div class="textarea-container" [class.focused]="isFocused()">
+  <textarea
+    class="styled-textarea"
+    [placeholder]="placeholder"
+    [rows]="rows"
+    [value]="value"
+    [readOnly]="readOnly" 
+    (input)="onInputChange($any($event.target).value)" 
+    (focus)="isFocused.set(true)"
+    (blur)="isFocused.set(false)">
+  </textarea>
+</div>
