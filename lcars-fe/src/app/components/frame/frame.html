@@ -1,71 +1,54 @@
-<div class="frame-container">
-  <header class="frame-header">
-    <div class="header-content">
-      <h1 class="app-title">
-        <img [src]="themeService.isDarkTheme() ? 'tron-logo-dark.png' : 'tron-logo-light.png'" 
-             alt="Cody Tron (Trace 0n)" 
-             class="header-logo">
-      </h1>
+<div class="lcars-frame-container" [class.dark-theme]="themeService.isDarkTheme()">
+  
+  <!-- TOP BAR & HEADER -->
+  <header class="lcars-header">
+    <div class="lcars-elbow-top-left"></div>
+    <div class="lcars-top-bar">
+      <div class="system-title">LCARS // TRON_OS // 32.CENTURY</div>
       
-      <div class="header-actions">
-        <div class="header-controls">
-          
-          @if (authStore.isLoggedIn()) {
-            <div class="user-section" (click)="authStore.logout()" title="Logout">
-              <span class="user-label">USER:</span>
-              <strong class="user-name">{{ authStore.username() }}</strong>
-            </div>
-
-            <div class="tron-divider"></div>
-          }
-
-          <div class="bit-container" (click)="themeService.toggleTheme()">
-            <div class="bit-3d-scene" [class.is-no]="themeService.isDarkTheme()">
-              <div class="bit-shape">
-                <div class="face"></div><div class="face"></div>
-                <div class="face"></div><div class="face"></div>
-                <div class="face"></div><div class="face"></div>
-                <div class="face"></div><div class="face"></div>
-              </div>
+      <div class="header-controls">
+        <!-- Dein 3D BIT -->
+        <div class="bit-container" (click)="themeService.toggleTheme()">
+          <div class="bit-3d-scene" [class.is-no]="themeService.isDarkTheme()">
+            <div class="bit-shape">
+              <div class="face"></div><div class="face"></div>
+              <div class="face"></div><div class="face"></div>
+              <div class="face"></div><div class="face"></div>
+              <div class="face"></div><div class="face"></div>
             </div>
           </div>
         </div>
         
-        <button class="menu-toggle" (click)="toggleMenu()">
-          <span></span><span></span><span></span>
-        </button>
+        <div class="tron-divider"></div>
+        <div class="user-info">COMMANDER_SESSION_ACTIVE</div>
       </div>
     </div>
   </header>
 
-  <div class="frame-main-area">
-    <nav class="frame-sidebar" [class.open]="isMenuOpen">
-
-      <div class="service-selector">
-        <app-dropdown
-          [items]="microserviceState.availableServices()" 
-          [selectedItem]="selectedService()"
-          (itemSelect)="selectService($event)">
-        </app-dropdown>
+  <div class="lcars-main-layout">
+    <!-- SIDEBAR (Der vertikale Balken) -->
+    <nav class="lcars-sidebar">
+      <div class="lcars-sidebar-content">
+        <a routerLink="/dashboard" routerLinkActive="active" class="lcars-nav-item">DASHBOARD</a>
+        <a routerLink="/media" routerLinkActive="active" class="lcars-nav-item item-blue">MEDIA_DB</a>
+        <a routerLink="/logs" routerLinkActive="active" class="lcars-nav-item item-orange">ACTION_LOG</a>
+        <div class="lcars-filler"></div> <!-- Schließt den Balken unten ab -->
       </div>
-
-      <ul>
-        <li>
-          <a [routerLink]="['/dashboard', microserviceState.selectedServiceId()]" routerLinkActive="active-link" (click)="closeMenus()">Dashboard</a>
-        </li>
-        <li>
-          <a [routerLink]="['/settings', microserviceState.selectedServiceId()]" routerLinkActive="active-link" (click)="closeMenus()">Einstellungen</a>
-        </li>
-      </ul>
     </nav>
 
-    <div class="sidebar-overlay" [class.active]="isMenuOpen" (click)="toggleMenu()"></div>
-
-    <main class="frame-content">
-      <router-outlet></router-outlet>
+    <!-- CONTENT AREA -->
+    <main class="lcars-content">
+      <div class="scroll-container">
+        <router-outlet></router-outlet>
+      </div>
     </main>
   </div>
 
-  <footer class="frame-footer">
+  <!-- FOOTER BAR -->
+  <footer class="lcars-footer">
+    <div class="lcars-elbow-bottom-left"></div>
+    <div class="lcars-bottom-bar">
+      <span class="status-text">SYSTEM_READY // ENCRYPTION_ACTIVE</span>
+    </div>
   </footer>
 </div>

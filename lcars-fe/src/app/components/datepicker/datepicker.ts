@@ -13,43 +13,48 @@ registerLocaleData(localeDe);
 })
 export class AppDatePicker {
   @Input() label?: string;
-  
-  // Nutze model() für einfaches Two-Way-Binding (Angular 17.2+)
-  // Falls älter: nutze value = signal<Date | null>(null)
   value = model<Date | null>(null);
-
   isMenuOpen = signal(false);
   viewDate = signal(new Date()); 
 
-  // Jetzt reagiert formattedDate, da value() ein Signal ist
-  formattedDate = computed(() => 
-    this.value() 
-      ? `${this.value()?.getDate().toString().padStart(2, '0')}.${(this.value()!.getMonth() + 1).toString().padStart(2, '0')}.${this.value()?.getFullYear()}`
-      : ''
-  );
+  // Dein geliebter Ternary für eine saubere Anzeige
+  formattedDate = computed(() => {
+    const d = this.value();
+    return d ? d.toLocaleDateString('de-DE') : '';
+  });
 
+  // Wichtig für das LCARS-Grid: Korrekte Positionierung der Tage
   daysInMonth = computed(() => {
     const d = this.viewDate();
-    const lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
-    return Array.from({ length: lastDay }, (_, i) => new Date(d.getFullYear(), d.getMonth(), i + 1));
+    const year = d.getFullYear();
+    const month = d.getMonth();
+    
+    const firstDayIndex = new Date(year, month, 1).getDay();
+    // Umwandlung US-Woche (So=0) zu EU-Woche (Mo=0):
+    const offset = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
+    
+    const lastDay = new Date(year, month + 1, 0).getDate();
+    
+    // Wir geben ein Array zurück, das vorne mit nulls aufgefüllt ist
+    const days: (Date | null)[] = Array(offset).fill(null);
+    for (let i = 1; i <= lastDay; i++) {
+      days.push(new Date(year, month, i));
+    }
+    return days;
   });
+
+  // Ternary Helper für Template
+  isSelected = (day: Date | null): boolean => 
+    day && this.value() ? day.getTime() === this.value()?.getTime() : false;
 
   toggleMenu = (): void => this.isMenuOpen.update(v => !v);
 
-  selectDate(d: Date): void {
-    // .set() triggert die computed-Updates
+  selectDate(d: Date | null): void {
+    if (!d) return;
     this.value.set(d);
     this.isMenuOpen.set(false);
   }
 
-  changeMonth(delta: number): void {
-    const current = this.viewDate();
-    this.viewDate.set(new Date(current.getFullYear(), current.getMonth() + delta, 1));
-  }
-
-  // Hilfsmethode für das Template-Highlighting
-  isSelected(day: Date): boolean {
-    const current = this.value();
-    return current ? current.getTime() === day.getTime() : false;
-  }
+  changeMonth = (delta: number): void => 
+    this.viewDate.update(d => new Date(d.getFullYear(), d.getMonth() + delta, 1));
 }

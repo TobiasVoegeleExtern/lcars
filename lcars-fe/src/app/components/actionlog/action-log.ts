@@ -5,7 +5,7 @@ import { AppDatePicker } from '../datepicker/datepicker';
 import { Button } from '../button/button';
 import { Card } from '../card/card';
 import { Textfield } from '../textfield/textfield';
-import { SystemLog } from '../../services/logaction/models/system-log';
+
 
 @Component({
   selector: 'app-action-log',
@@ -15,30 +15,26 @@ import { SystemLog } from '../../services/logaction/models/system-log';
   styleUrl: './action-log.scss'
 })
 export class ActionLogComponent {
-  public logs = input<SystemLog[]>([]);
+  // Input für die eigentlichen Daten (z.B. vom Go-Backend via WebSocket)
+  public rawLogs = input<any[]>([]); 
+  
   public filterDate = signal<Date | null>(null);
 
+  // Der berechnete State für dein LCARS-Display
   public terminalOutput = computed(() => {
-    const selectedDate = this.filterDate();
-    const allLogs = this.logs() || [];
+    const logs = this.rawLogs();
+    const selected = this.filterDate();
 
-    const filtered = selectedDate 
-      ? allLogs.filter(log => new Date(log.timestamp).toDateString() === selectedDate.toDateString())
-      : allLogs;
+    // Ternary: Entweder gefiltert oder die gesamte Liste
+    const filtered = selected 
+      ? logs.filter(log => new Date(log.timestamp).toDateString() === selected.toDateString())
+      : logs;
 
-    return filtered.length === 0 
-      ? '> SYSTEM_STATUS: NO_LOGS_FOUND_IN_SECTOR_' 
-      : filtered.map(log => {
-          const dateObj = new Date(log.timestamp);
-          const time = dateObj.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-          
-          const type = log.actionType.padEnd(15);
-          const ip = (log.ipAddress || 'unknown').padEnd(15);
-          
-        
-          const user = (log.username ? log.username : 'SYSTEM').padEnd(12);
-          
-          return `[${time}] ${type} | USER: ${user} | IP: ${ip} | ${log.details}`;
-        }).join('\n');
+    // Wir geben eine sortierte Liste zurück (neueste oben für das Terminal)
+    return filtered.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
   });
+
+  // Helper für das LCARS-Feeling
+  public getStatusColor = (type: string) => 
+    type === 'error' ? 'var(--tron-red)' : 'var(--tron-cyan)';
 }

@@ -4,28 +4,33 @@
 
 <div class="datepicker-container">
   <div class="input-wrapper" (click)="toggleMenu()" [class.active]="isMenuOpen()">
-    <input type="text" [value]="formattedDate()" placeholder="DD.MM.YYYY" readonly>
-    <span class="calendar-icon">📅</span>
+    <input type="text" [value]="formattedDate()" placeholder="SELECT STARDATE..." readonly>
+    <span class="calendar-icon">{{ isMenuOpen() ? '▲' : '▼' }}</span>
   </div>
 
   @if (isMenuOpen()) {
     <div class="calendar-dropdown">
       <div class="calendar-header">
         <button (click)="changeMonth(-1)" type="button">«</button>
-        <span>{{ viewDate() | date:'MMMM yyyy':'':'de' }}</span>
+        <span class="view-month">{{ viewDate() | date:'MMMM yyyy':'':'de' }}</span>
         <button (click)="changeMonth(1)" type="button">»</button>
       </div>
+      
       <div class="calendar-grid">
         <div class="weekday">MO</div><div class="weekday">DI</div><div class="weekday">MI</div>
         <div class="weekday">DO</div><div class="weekday">FR</div><div class="weekday">SA</div><div class="weekday">SO</div>
 
-        @for (day of daysInMonth(); track day.getTime()) {
-  <div class="day-cell" 
-       [class.selected]="isSelected(day)"
-       (click)="selectDate(day); $event.stopPropagation()">
-    {{ day.getDate() }}
-  </div>
-}
+        @for (day of daysInMonth(); track $index) {
+          @if (day) {
+            <div class="day-cell" 
+                 [class.selected]="isSelected(day)"
+                 (click)="selectDate(day); $event.stopPropagation()">
+              {{ day.getDate() }}
+            </div>
+          } @else {
+            <div class="day-cell empty"></div>
+          }
+        }
       </div>
     </div>
   }

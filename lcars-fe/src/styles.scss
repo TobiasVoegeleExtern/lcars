@@ -1,1 +1,122 @@
-/* You can add global styles to this file, and also import other style files */
+/* =================================================================
+                 LCARS-TRON: MISSION CONTROL (32nd Century)
+================================================================= */
+
+:root {
+  /* TRON LEGACY PALETTE */
+  --tron-black: #02060a;
+  --tron-grid-blue: #001a2d;
+  --tron-cyan: #00f3ff;
+  --tron-cyan-glow: rgba(0, 243, 255, 0.6);
+  --tron-orange: #ff9d00;
+  --tron-orange-glow: rgba(255, 157, 0, 0.6);
+  
+  /* LCARS 32ND CENTURY COLORS (Translucency & Pastels) */
+  --lcars-violet: #c686ff;
+  --lcars-peach: #ffb886;
+  --lcars-blue: #86abff;
+  
+  /* FUNCTIONAL ASSIGNMENTS */
+  --background-color: var(--tron-black);
+  --surface-color: rgba(10, 25, 47, 0.7); /* Schwebendes Glas-Gefühl */
+  --text-color: #e0faff;
+  --text-color-muted: #8892b0;
+  
+  /* GEOMETRY */
+  --lcars-elbow-radius: 45px;
+  --lcars-bar-height: 32px;
+  --border-glow: 1px solid var(--tron-cyan);
+  --shadow: 0 0 15px var(--tron-cyan-glow);
+}
+
+/* =================================================================
+                 LCARS LAYOUT ENGINE
+================================================================= */
+
+body {
+  margin: 0;
+  background-color: var(--background-color);
+  background-image: 
+    linear-gradient(var(--tron-grid-blue) 1px, transparent 1px),
+    linear-gradient(90deg, var(--tron-grid-blue) 1px, transparent 1px);
+  background-size: 50px 50px; /* Der Tron Grid */
+  color: var(--text-color);
+  font-family: 'Oswald', 'Segoe UI', sans-serif; /* Schmale LCARS-Typo */
+  overflow-x: hidden;
+}
+
+/* Die berühmte LCARS Kurve ("The Elbow") im Tron-Stil */
+.lcars-elbow {
+  width: 200px;
+  height: 120px;
+  border-left: var(--lcars-bar-height) solid var(--tron-cyan);
+  border-top: var(--lcars-bar-height) solid var(--tron-cyan);
+  border-top-left-radius: var(--lcars-elbow-radius);
+  position: relative;
+  box-shadow: -2px -2px 15px var(--tron-cyan-glow);
+  margin-bottom: 5px;
+}
+
+/* LCARS End-Cap (Abgerundete Balken) */
+.lcars-bar {
+  height: var(--lcars-bar-height);
+  background-color: var(--tron-cyan);
+  border-radius: 0 var(--lcars-bar-height) var(--lcars-bar-height) 0;
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  color: var(--tron-black);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 0 0 10px var(--tron-cyan-glow);
+}
+
+/* =================================================================
+                 COMPONENTS (MODERNIZED)
+================================================================= */
+
+.card {
+  background: rgba(0, 26, 45, 0.4);
+  backdrop-filter: blur(10px); /* 32nd Century Hologramm-Look */
+  border: 1px solid rgba(0, 243, 255, 0.3);
+  border-left: 8px solid var(--tron-cyan);
+  border-radius: 4px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--tron-cyan);
+  box-shadow: 0 0 25px var(--tron-cyan-glow);
+  transform: scale(1.01);
+}
+
+/* Tron-Style Input Fields */
+input {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--tron-cyan);
+  color: var(--tron-cyan);
+  padding: 10px;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 5px var(--tron-cyan-glow);
+}
+
+/* Status Badges mit Puls-Effekt */
+.status-glow {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: var(--tron-cyan);
+  box-shadow: 0 0 10px var(--tron-cyan);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; box-shadow: 0 0 5px var(--tron-cyan); }
+  50% { opacity: 0.5; box-shadow: 0 0 15px var(--tron-cyan); }
+  100% { opacity: 1; box-shadow: 0 0 5px var(--tron-cyan); }
+}
