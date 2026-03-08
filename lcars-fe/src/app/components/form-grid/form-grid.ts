@@ -5,11 +5,10 @@ import { TronSecurityChecker } from '../../utils/tron-security-checker';
   selector: 'app-form-grid',
   standalone: true,
   templateUrl: './form-grid.html',
-  styleUrl: './form-grid.scss'
+  styleUrls: ['./form-grid.scss']
 })
 export class FormGrid {
   private security = inject(TronSecurityChecker);
-
 
   @Input() layout: 'grid' | 'stacked' = 'grid'; 
   @Input() variant: 'default' | 'panel' = 'default';
@@ -17,7 +16,12 @@ export class FormGrid {
 
   isHovered = signal<boolean>(false);
   
+  // Ternary-Einsatz für die Berechtigungsprüfung
   public isDisabled = computed(() => 
-    this.requiredAction ? !this.security.hasPermission(this.requiredAction) : false
+    this.requiredAction ? (this.security.hasPermission(this.requiredAction) ? false : true) : false
   );
+
+  setHover(state: boolean) {
+    state ? this.isHovered.set(true) : this.isHovered.set(false);
+  }
 }

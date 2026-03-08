@@ -7,47 +7,37 @@
       <div class="system-title">LCARS // TRON_OS // 32.CENTURY</div>
       
       <div class="header-controls">
-        <!-- Dein 3D BIT -->
-        <div class="bit-container" (click)="themeService.toggleTheme()">
-          <div class="bit-3d-scene" [class.is-no]="themeService.isDarkTheme()">
-            <div class="bit-shape">
-              <div class="face"></div><div class="face"></div>
-              <div class="face"></div><div class="face"></div>
-              <div class="face"></div><div class="face"></div>
-              <div class="face"></div><div class="face"></div>
-            </div>
-          </div>
-        </div>
+       
         
-        <div class="tron-divider"></div>
-        <div class="user-info">COMMANDER_SESSION_ACTIVE</div>
+ 
       </div>
     </div>
   </header>
 
   <div class="lcars-main-layout">
-    <!-- SIDEBAR (Der vertikale Balken) -->
+    <!-- SIDEBAR -->
     <nav class="lcars-sidebar">
       <div class="lcars-sidebar-content">
         <a routerLink="/dashboard" routerLinkActive="active" class="lcars-nav-item">DASHBOARD</a>
         <a routerLink="/media" routerLinkActive="active" class="lcars-nav-item item-blue">MEDIA_DB</a>
         <a routerLink="/logs" routerLinkActive="active" class="lcars-nav-item item-orange">ACTION_LOG</a>
-        <div class="lcars-filler"></div> <!-- Schließt den Balken unten ab -->
+        <div class="lcars-filler"></div> 
       </div>
     </nav>
 
     <!-- CONTENT AREA -->
     <main class="lcars-content">
       <div class="scroll-container">
+     
         <router-outlet></router-outlet>
       </div>
     </main>
   </div>
 
   <!-- FOOTER BAR -->
-  <footer class="lcars-footer">
-    <div class="lcars-elbow-bottom-left"></div>
-    <div class="lcars-bottom-bar">
+  <footer class="lcars-footer lcars-header">
+    <div class="lcars-elbow-bottom-left" style="border-radius: 0 0 0 40px; height: 30px;"></div>
+    <div class="lcars-bottom-bar lcars-top-bar" style="height: 20px; font-size: 0.7rem;">
       <span class="status-text">SYSTEM_READY // ENCRYPTION_ACTIVE</span>
     </div>
   </footer>

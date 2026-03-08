@@ -1,15 +1,16 @@
 @if (label) {
-  <label class="input-label">{{ label }}</label>
+  <label class="tron-input-label">{{ label }}</label>
 }
 
-<div class="input-container" [class.focused]="isFocused()">
+<div class="input-container" [class.focused]="isFocused() ? true : false">
   <input 
     [type]="type"
     [placeholder]="placeholder"
     [value]="value"
-    (input)="onInputChange($event.target.value)"
-    (focus)="isFocused.set(true)"
-    (blur)="isFocused.set(false)"
-    class="styled-input"
+    (input)="onInputChange($event)"
+    (focus)="setFocus(true)"
+    (blur)="setFocus(false)"
+    class="tron-styled-input"
   />
+  <div class="input-scanline"></div>
 </div>

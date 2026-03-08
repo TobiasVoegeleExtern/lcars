@@ -1,0 +1,103 @@
+<div class="media-db-container">
+  
+  <div class="search-header">
+    <div class="lcars-block blue"></div>
+    <input 
+      type="text" 
+      class="tron-input" 
+      placeholder="SEARCH_MEDIA_DATABASE..." 
+      (input)="updateSearch($event)"
+      [value]="searchQuery()"
+    />
+    <div class="lcars-block orange flex-1"></div>
+    
+    <button class="tron-button secondary" (click)="startCreate()">ADD_NEW_MEDIA</button>
+    
+    <div class="record-count">
+      MATCHES: {{ filteredRecords().length < 10 ? '0' + filteredRecords().length : filteredRecords().length }}
+    </div>
+  </div>
+
+  <div class="db-workspace">
+    
+    <div class="media-grid">
+      @for (record of filteredRecords(); track record.id) {
+        <div 
+          class="media-card" 
+          [style.--card-color]="record.color"
+          [class.active]="selectedRecord()?.id === record.id ? true : false"
+          (click)="selectRecord(record)">
+          
+          <div class="card-type-badge">{{ record.type }}</div>
+          <div class="card-id">{{ record.id }}</div>
+          <div class="card-title">{{ record.title }}</div>
+          
+          <div class="card-visual">
+            <div class="scanline"></div>
+          </div>
+          
+          <div class="card-status" [class.alert]="record.status === 'ENCRYPTED' ? true : false">
+            {{ record.status }}
+          </div>
+        </div>
+      } @empty {
+        <div class="no-results">NO_RECORDS_FOUND // ADJUST_PARAMETERS</div>
+      }
+    </div>
+
+    @if (selectedRecord() !== null) {
+      }
+
+    @if (isCreating() === true) {
+      <aside class="detail-panel-wrapper">
+        <app-form-grid 
+          variant="panel" 
+          layout="stacked" 
+         
+          [style.--tron-cyan]="draftRecord().color || '#86abff'">
+          
+          <div form-title>
+            INITIALIZE_DATA // CD_FORMAT
+          </div>
+
+          <div form-inputs>
+            <app-input 
+              label="TITLE (SYSTEM TAG)" 
+              [value]="draftRecord().title || ''"
+              (input)="updateDraft('title', $event)">
+            </app-input>
+            
+            <app-input 
+              label="COLLECTION" 
+              [value]="draftRecord().type || ''"
+              (input)="updateDraft('type', $event)">
+            </app-input>
+
+            <app-input 
+              label="STATUS" 
+              [value]="draftRecord().status || ''"
+              (input)="updateDraft('status', $event)">
+            </app-input>
+            
+            <app-input 
+              label="COLOR HEX" 
+              [value]="draftRecord().color || ''"
+              (input)="updateDraft('color', $event)">
+            </app-input>
+
+            <div class="holo-preview-box">
+              [ WAITING_FOR_DATA_INPUT ]
+            </div>
+          </div>
+
+          <div form-actions>
+            <button class="tron-button" (click)="cancelCreate()">ABORT</button>
+            <button class="tron-button primary" (click)="insertNewRecord()">INSERT_RECORD</button>
+          </div>
+          
+        </app-form-grid>
+      </aside>
+    }
+
+  </div>
+</div>
