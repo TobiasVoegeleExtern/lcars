@@ -5,7 +5,7 @@ src/main/java/com/lcars/service/
 │   │   ├── LcarsEntry.java         <-- Aggregate Root (Record, keine Super-Entity)
 │   │   └── traits/                 <-- Composition-Bausteine
 │   │       ├── IdentityTrait.java  <-- Record
-│   │       ├── VisualTrait.java    <-- Record
+│   │       ├
 │   │       └── LifecycleTrait.java <-- Record
 │   ├── service/                    <-- Domain Services (Reine Business-Logik)
 │   └── exception/                  <-- Domänenspezifische Fehler (z.B. EntryLockedException)

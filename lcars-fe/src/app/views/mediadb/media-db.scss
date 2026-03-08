@@ -1,203 +1,30 @@
-/* =================================================================
-   MEDIA DATABASE (LCARS / TRON)
-================================================================= */
+:host { display: block; height: 100vh; width: 100%; overflow: hidden; background: #000; font-family: 'JetBrains Mono', monospace; }
 
 .media-db-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  gap: 20px;
-  animation: fadeIn 0.5s ease-out;
+  display: flex; flex-direction: column; height: 100%; padding: 20px; gap: 20px; box-sizing: border-box;
 }
 
-/* --- SEARCH HEADER --- */
 .search-header {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-
+  display: flex; align-items: center; gap: 15px; flex-shrink: 0;
   .lcars-block { height: 12px; border-radius: 6px; }
-  .blue { width: 40px; background: var(--lcars-blue, #86abff); }
-  .orange { background: var(--tron-orange, #ff9d00); }
+  .blue { width: 40px; background: #86abff; }
+  .orange { background: #ff9d00; }
+  .short-connector { width: 30px; }
   .flex-1 { flex: 1; }
-
-  .tron-input {
-    background: rgba(0, 243, 255, 0.05);
-    border: 1px solid var(--tron-cyan, #00f3ff);
-    color: var(--tron-cyan, #00f3ff);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1rem;
-    padding: 8px 15px;
-    width: 350px;
-    outline: none;
-    box-shadow: inset 0 0 10px rgba(0, 243, 255, 0.1);
-    transition: all 0.3s;
-
-    &:focus {
-      background: rgba(0, 243, 255, 0.15);
-      box-shadow: 0 0 15px var(--tron-cyan-glow, rgba(0,243,255,0.6)), inset 0 0 10px rgba(0,243,255,0.4);
-    }
-    &::placeholder { color: rgba(0, 243, 255, 0.4); }
-  }
-
-  .record-count {
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--tron-cyan, #00f3ff);
-    font-size: 0.9rem;
-    letter-spacing: 2px;
+  .tron-input { 
+    background: rgba(0, 243, 255, 0.05); border: 1px solid #00f3ff; color: #00f3ff;
+    padding: 8px 15px; width: 300px; outline: none; font-family: inherit;
+    &:focus { box-shadow: 0 0 15px rgba(0, 243, 255, 0.2); }
   }
 }
 
-/* --- WORKSPACE & GRID --- */
-.db-workspace {
-  display: flex;
-  flex: 1;
-  gap: 20px;
-  min-height: 0; 
-}
+.db-workspace { display: flex; flex: 1; gap: 20px; min-height: 0; overflow: hidden; }
 
 .media-grid {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  overflow-y: auto;
-  align-content: flex-start;
-  padding-right: 10px;
-
-  /* Custom Tron Scrollbar */
-  &::-webkit-scrollbar { width: 6px; }
-  &::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
-  &::-webkit-scrollbar-thumb { background: var(--tron-cyan, #00f3ff); border-radius: 3px; }
+  flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px; overflow-y: auto; padding-right: 10px; align-items: start;
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: #00f3ff; }
 }
 
-.no-results {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 40px;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--tron-orange, #ff9d00);
-  font-size: 1.2rem;
-  letter-spacing: 2px;
-  border: 1px dashed var(--tron-orange, #ff9d00);
-  background: rgba(255, 157, 0, 0.1);
-}
-
-/* --- MEDIA CARDS --- */
-.media-card {
-  --card-color: var(--tron-cyan, #00f3ff); /* Fallback, wird vom Inline-Style überschrieben */
-  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.6) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-left: 4px solid var(--card-color);
-  border-radius: 4px;
-  padding: 15px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-
-  &:hover, &.active {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: var(--card-color);
-    box-shadow: 0 0 20px rgba(0,0,0,0.5), inset 0 0 15px var(--card-color);
-    transform: translateY(-2px);
-  }
-
-  .card-type-badge {
-    position: absolute;
-    top: 10px; right: 10px;
-    font-size: 0.7rem;
-    background: var(--card-color);
-    color: #000;
-    padding: 2px 6px;
-    font-weight: bold;
-    border-radius: 2px;
-  }
-
-  .card-id { font-family: 'JetBrains Mono', monospace; color: #888; font-size: 0.8rem; margin-bottom: 5px; }
-  .card-title { font-size: 1.1rem; font-weight: bold; color: #fff; margin-bottom: 15px; letter-spacing: 1px; }
-
-  .card-visual {
-    height: 80px;
-    background: rgba(0,0,0,0.5);
-    border: 1px solid rgba(255,255,255,0.05);
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 10px;
-
-    .scanline {
-      position: absolute; width: 100%; height: 2px; background: var(--card-color);
-      opacity: 0.5; box-shadow: 0 0 5px var(--card-color);
-      animation: scan 3s linear infinite;
-    }
-  }
-
-  .card-status {
-    font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--card-color);
-    &.alert { color: var(--tron-red, #ff003c); text-shadow: 0 0 5px var(--tron-red, #ff003c); }
-  }
-}
-
-/* --- SIDE PANEL WRAPPER (Host für das Form-Grid) --- */
-.detail-panel-wrapper {
-  width: 480px; /* Genug Platz für die neuen AppInputs */
-  animation: slideIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-  
-  app-form-grid {
-    display: block;
-    height: 100%;
-  }
-}
-
-/* --- FORM SPECIFICS & BUTTONS --- */
-.holo-preview-box {
-  width: 100%;
-  min-height: 120px; 
-  margin-top: 15px;
-  border: 1px dashed var(--tron-cyan, #00f3ff);
-  display: flex; 
-  justify-content: center; 
-  align-items: center;
-  color: var(--tron-cyan, #00f3ff); 
-  font-family: 'JetBrains Mono', monospace; 
-  opacity: 0.6;
-  background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 243, 255, 0.05) 10px, rgba(0, 243, 255, 0.05) 20px);
-  box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.1);
-  letter-spacing: 2px;
-  font-size: 0.8rem;
-}
-
-.tron-button {
-  background: rgba(0,0,0,0.5); 
-  border: 1px solid var(--tron-cyan, #00f3ff); 
-  color: var(--tron-cyan, #00f3ff);
-  padding: 10px 20px; 
-  font-family: 'JetBrains Mono', monospace; 
-  font-weight: 800; 
-  cursor: pointer; 
-  transition: all 0.2s;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-
-  &:hover { 
-    background: rgba(0, 243, 255, 0.1); 
-    box-shadow: 0 0 15px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.2); 
-  }
-
-  &.primary {
-    background: var(--tron-cyan, #00f3ff);
-    color: #000;
-    box-shadow: 0 0 10px var(--tron-cyan-glow, rgba(0,243,255,0.6));
-
-    &:hover {
-      background: #fff;
-      border-color: #fff;
-      box-shadow: 0 0 20px #fff;
-    }
-  }
-}
-
-/* --- ANIMATIONS --- */
-@keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideIn { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.no-results { grid-column: 1/-1; padding: 40px; color: #00f3ff; border: 1px dashed rgba(0,243,255,0.2); text-align: center; }

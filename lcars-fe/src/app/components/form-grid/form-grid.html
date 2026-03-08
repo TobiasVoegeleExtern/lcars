@@ -1,8 +1,8 @@
 <div class="form-layout-wrapper" 
-     [class.tron-panel-frame]="variant === 'panel' ? true : false" 
-     [class.vertical-form]="layout === 'stacked' ? true : false"
-     [class.grid-form]="layout === 'grid' ? true : false"
-     [class.access-denied]="isDisabled() ? true : false"
+     [class.tron-panel-frame]="variant === 'panel'" 
+     [class.vertical-form]="layout === 'stacked'"
+     [class.grid-form]="layout === 'grid'"
+     [class.access-denied]="isDisabled()"
      (mouseenter)="setHover(true)"
      (mouseleave)="setHover(false)"> 
   
@@ -18,7 +18,7 @@
     </div>
   </div>
   
-  <fieldset [disabled]="isDisabled() ? true : false" class="security-fieldset">
+  <fieldset [disabled]="isDisabled()" class="security-fieldset">
     
     <div class="inputs-container">
       <ng-content select="[form-inputs]"></ng-content>

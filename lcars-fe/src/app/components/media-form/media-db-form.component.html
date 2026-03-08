@@ -1,0 +1,45 @@
+<aside class="detail-panel-wrapper">
+  <app-form-grid 
+    variant="panel" 
+    layout="stacked" 
+    [style.--tron-cyan]="record().color || '#86abff'">
+    
+    <div form-title>
+      {{ isEditMode() ? 'UPDATE_RECORD // ' + record().id : 'INITIALIZE_NEW_ENTRY' }}
+    </div>
+
+    <div form-inputs>
+      <app-input 
+        label="TITLE (SYSTEM TAG)" 
+        [value]="record().title || ''"
+        (input)="onInputChange('title', $event)">
+      </app-input>
+      
+      <app-input 
+        label="COLLECTION" 
+        [value]="record().type || ''"
+        (input)="onInputChange('type', $event)">
+      </app-input>
+
+      <app-input 
+        label="STATUS" 
+        [value]="record().status || ''"
+        (input)="onInputChange('status', $event)">
+      </app-input>
+      
+      <div class="holo-preview-box">
+        {{ isEditMode() ? '[ DATA_STREAM_ACTIVE ]' : '[ WAITING_FOR_INPUT ]' }}
+      </div>
+    </div>
+
+    <div form-actions>
+      <button class="tron-button" (click)="cancel.emit()">
+        {{ isEditMode() ? 'CLOSE' : 'ABORT' }}
+      </button>
+      <button class="tron-button primary" (click)="save.emit(record())">
+        {{ isEditMode() ? 'UPDATE' : 'SAVE' }}
+      </button>
+    </div>
+    
+  </app-form-grid>
+</aside>

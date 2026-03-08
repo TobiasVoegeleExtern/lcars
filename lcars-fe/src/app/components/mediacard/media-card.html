@@ -1,0 +1,16 @@
+<div class="media-card" 
+     [style.--card-color]="color()"
+     [class.active]="isActive()"
+     (click)="onCardClick()">
+  
+  <div class="card-type-badge">{{ badgeText() || type() }}</div>
+  <div class="card-title">{{ title() }}</div>
+  
+  <div class="card-visual">
+    <div class="scanline"></div>
+  </div>
+  
+  <div class="card-status" [class.alert]="isAlert()">
+    {{ status() }}
+  </div>
+</div>
