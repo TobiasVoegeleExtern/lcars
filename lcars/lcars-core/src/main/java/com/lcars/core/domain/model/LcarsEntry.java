@@ -7,7 +7,7 @@ import com.lcars.core.domain.model.traits.LifecycleTrait;
 import java.util.Map;
 
 /**
- * Das Haupt-Aggregat ohne den überflüssigen VisualTrait.
+ * Das Haupt-Aggregat 
  */
 public record LcarsEntry(
     IdentityTrait identity,

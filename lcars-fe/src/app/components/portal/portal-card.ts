@@ -17,92 +17,110 @@ import * as THREE from 'three';
       (pointerout)="onHover(false)"
       (click)="navigate()">
       
-      <ngt-mesh>
-        <ngt-box-geometry *args="[2.7, 4.1, 0.05]" />
-        <ngt-mesh-basic-material [color]="color()" [wireframe]="true" [transparent]="true" [opacity]="hovered() ? 1 : 0.3" />
+      <ngt-mesh #layer3>
+        <ngt-box-geometry *args="[3.2, 0.9, 0.02]" />
+        <ngt-mesh-basic-material [color]="color()" [transparent]="true" [opacity]="0.1" [depthWrite]="false" />
       </ngt-mesh>
 
-      <ngt-mesh>
-        <ngt-box-geometry *args="[2.6, 4.0, 0.02]" />
-        <ngt-mesh-physical-material [color]="color()" [transparent]="true" [opacity]="hovered() ? 0.3 : 0.1" [roughness]="0.1" [metalness]="0.8" />
+      <ngt-mesh #layer2>
+        <ngt-box-geometry *args="[3.2, 0.9, 0.02]" />
+        <ngt-mesh-basic-material [color]="color()" [transparent]="true" [opacity]="0.25" [depthWrite]="false" />
       </ngt-mesh>
 
-      <ngt-mesh [position]="[0, 1.6, 0.03]">
-        <ngt-box-geometry *args="[2.4, 0.5, 0.04]" />
-        <ngt-mesh-standard-material [color]="color()" [emissive]="color()" [emissiveIntensity]="hovered() ? 1.5 : 0.5" [transparent]="true" [opacity]="0.8" />
-      </ngt-mesh>
+      <ngt-mesh #layer1>
+        <ngt-box-geometry *args="[3.2, 0.9, 0.02]" />
+        <ngt-mesh-basic-material [color]="color()" [transparent]="true" [opacity]="0.6" [depthWrite]="false" />
+        
+        <ngt-line-segments>
+          <ngt-edges-geometry *args="[boxGeo()]" />
+          <ngt-line-basic-material [color]="color()" [linewidth]="2" [transparent]="true" [opacity]="hovered() ? 1 : 0.4" />
+        </ngt-line-segments>
 
-      <ngt-mesh [position]="[0, 1.6, 0.06]">
-        <ngt-plane-geometry *args="[2.4, 0.6]" />
-        <ngt-mesh-basic-material [map]="textTexture()" [transparent]="true" [depthWrite]="false" />
+        <ngt-mesh [position]="[0, 0, 0.02]">
+          <ngt-plane-geometry *args="[3.0, 0.8]" />
+          <ngt-mesh-basic-material [map]="textTexture()" [transparent]="true" [depthWrite]="false" />
+        </ngt-mesh>
       </ngt-mesh>
-
-      <ngt-mesh [position]="[0, 0.8, 0.03]"><ngt-box-geometry *args="[2.4, 0.03, 0.04]" /><ngt-mesh-standard-material [color]="color()" [emissive]="color()" [emissiveIntensity]="hovered() ? 1.5 : 0.2" /></ngt-mesh>
-      <ngt-mesh [position]="[0, 0.3, 0.03]"><ngt-box-geometry *args="[2.4, 0.03, 0.04]" /><ngt-mesh-standard-material [color]="color()" [emissive]="color()" [emissiveIntensity]="hovered() ? 1.5 : 0.2" /></ngt-mesh>
-      <ngt-mesh [position]="[0, -0.2, 0.03]"><ngt-box-geometry *args="[2.4, 0.03, 0.04]" /><ngt-mesh-standard-material [color]="color()" [emissive]="color()" [emissiveIntensity]="hovered() ? 1.5 : 0.2" /></ngt-mesh>
-      <ngt-mesh [position]="[0, -0.7, 0.03]"><ngt-box-geometry *args="[2.4, 0.03, 0.04]" /><ngt-mesh-standard-material [color]="color()" [emissive]="color()" [emissiveIntensity]="hovered() ? 1.5 : 0.2" /></ngt-mesh>
       
     </ngt-group>
   `
 })
 export class PortalCard {
+  protected readonly THREE = THREE;
+
   basePosition = input<[number, number, number]>([0, 0, 0]);
   baseRotation = input<[number, number, number]>([0, 0, 0]);
-  color = input<string>('#00f3ff');
+  color = input<string>('#00e5ff'); // Cyberpunk Cyan
   route = input<string>('');
-  label = input<string>('UNKNOWN'); // Der neue Label-Input
+  label = input<string>('VEHICLES');
 
   hovered = signal(false);
+  
   groupRef = viewChild.required<ElementRef<THREE.Group>>('group');
+  layer1Ref = viewChild.required<ElementRef<THREE.Mesh>>('layer1');
+  layer2Ref = viewChild.required<ElementRef<THREE.Mesh>>('layer2');
+  layer3Ref = viewChild.required<ElementRef<THREE.Mesh>>('layer3');
   
   private router = inject(Router);
   private floatOffset = Math.random() * 5;
 
-  // Signal: Generiert den scharfen Text on the fly in den RAM
+  // Gemeinsame Geometrie für das Mesh und die Wireframe-Kanten
+  boxGeo = computed(() => new THREE.BoxGeometry(3.2, 0.9, 0.02));
+
+  // Generiert das cleane UI-Label
   textTexture = computed(() => {
     const c = document.createElement('canvas');
     c.width = 512; c.height = 128;
     const ctx = c.getContext('2d');
     
-    ctx ? (
+    return ctx ? (
       ctx.fillStyle = 'transparent',
       ctx.fillRect(0, 0, 512, 128),
-      ctx.font = 'bold 50px "JetBrains Mono", monospace, sans-serif',
-      ctx.fillStyle = '#ffffff', // Weiße Schrift für Kontrast
-      ctx.textAlign = 'center',
+      ctx.font = '300 42px "Jura", "Orbitron", "Share Tech Mono", sans-serif',
+      ctx.fillStyle = '#ffffff',
+      ctx.textAlign = 'left',
       ctx.textBaseline = 'middle',
-      ctx.fillText(this.label(), 256, 64)
-    ) : null;
-    
-    return new THREE.CanvasTexture(c);
+      ctx.fillText(this.label().toUpperCase(), 40, 64),
+      new THREE.CanvasTexture(c)
+    ) : new THREE.CanvasTexture(c);
   });
 
   constructor() {
     injectBeforeRender(({ clock }) => {
       const group = this.groupRef().nativeElement;
-      group ? (() => {
+      const l2 = this.layer2Ref().nativeElement;
+      const l3 = this.layer3Ref().nativeElement;
+      const t = clock.elapsedTime + this.floatOffset;
+
+      return (group && l2 && l3) ? (() => {
         const isHov = this.hovered();
-        const time = clock.elapsedTime + this.floatOffset;
         
-        const targetZ = isHov ? this.basePosition()[2] + 1.2 : this.basePosition()[2];
-        const targetY = this.basePosition()[1] + Math.sin(time * 2) * 0.1;
-        const targetRotY = isHov ? 0 : this.baseRotation()[1];
+        // Sanftes Schweben
+        const targetY = this.basePosition()[1] + Math.sin(t * 1.5) * 0.05;
+        group.position.lerp(new THREE.Vector3(this.basePosition()[0], targetY, this.basePosition()[2]), 0.1);
         
-        group.position.lerp(new THREE.Vector3(this.basePosition()[0], targetY, targetZ), 0.1);
+        // Kernmechanik: Die Ebenen fächern sich beim Hovern nach hinten links oben auf
+        const spread = isHov ? 0.35 : 0.12;
+        
+        l2.position.lerp(new THREE.Vector3(-spread, spread * 0.4, -spread), 0.12);
+        l3.position.lerp(new THREE.Vector3(-spread * 2, spread * 0.8, -spread * 2), 0.12);
+
+        // Leichtes Eindrehen zum User, wenn gehovert wird
+        const targetRotY = isHov ? 0.05 : 0;
         group.rotation.y += (targetRotY - group.rotation.y) * 0.1;
-        
-        const targetScale = isHov ? 1.05 : 1.0;
-        group.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.15);
       })() : null;
     });
   }
 
   onHover(state: boolean) {
-    this.hovered.set(state);
-    document.body.style.cursor = state ? 'pointer' : 'auto';
+    return state ? 
+      (this.hovered.set(true), document.body.style.cursor = 'pointer') : 
+      (this.hovered.set(false), document.body.style.cursor = 'auto');
   }
 
   navigate() {
-    this.route() ? (document.body.style.cursor = 'auto', this.router.navigate([this.route()])) : null;
+    return this.route() ? 
+      (document.body.style.cursor = 'auto', this.router.navigate([this.route()])) : 
+      null;
   }
 }

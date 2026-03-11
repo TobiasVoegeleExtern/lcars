@@ -1,0 +1,73 @@
+ :host { 
+      display: block; width: 100%; height: 100%; position: relative;
+      /* Tiefblaues Radial-Gradient passend zum Bildhintergrund */
+      background: radial-gradient(circle at center, #001226 0%, #000205 100%);
+      font-family: 'Orbitron', 'JetBrains Mono', monospace;
+      color: #99ccff; 
+    }
+    
+    .fui-block {
+      position: absolute;
+      width: 320px;
+      z-index: 10;
+    }
+    
+    .fui-block-a { top: 30px; left: 30px; }
+    .fui-block-c { top: 30px; left: 50%; transform: translateX(-50%); width: 400px; text-align: center; }
+    .fui-block-d { top: 30px; right: 30px; text-align: right; }
+    .fui-block-braindance { top: 50%; right: 30px; transform: translateY(-50%); width: 380px; }
+    .fui-bottom { bottom: 30px; left: 50%; transform: translateX(-50%); text-align: center; width: 400px; }
+
+    .fui-letter-square {
+      display: inline-block;
+      width: 25px; height: 25px;
+      line-height: 25px; text-align: center;
+      border: 1px solid #00aaff;
+      color: #00aaff;
+      font-weight: 800;
+      margin-right: 10px;
+      box-shadow: 0 0 5px rgba(0, 170, 255, 0.3);
+    }
+    
+    p { margin: 5px 0 10px; font-size: 0.75rem; line-height: 1.4; opacity: 0.7; }
+    h3 { margin: 15px 0 5px; font-size: 0.8rem; font-weight: 300; letter-spacing: 1px; color: #fff; }
+
+    .fui-cyan { color: #00f3ff; text-shadow: 0 0 10px rgba(0, 243, 255, 0.6); }
+    
+    .fui-user { margin-top: 20px; text-align: left; }
+    .fui-user-id { font-size: 1.2rem; font-weight: 800; }
+    
+    .fui-security-level { text-align: center; }
+    .fui-button-group { display: flex; gap: 10px; justify-content: center; }
+    .fui-btn {
+      background: transparent; border: 1px solid #0055aa;
+      color: #00f3ff; padding: 5px 15px; font-weight: 800; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .active-btn { background: #00aaff; color: #000; border-color: #00aaff; box-shadow: 0 0 12px rgba(0, 170, 255, 0.6); }
+    
+    .fui-text-box { margin-top: 10px; border: 1px solid #0055aa; background: rgba(0, 10, 25, 0.6); padding: 10px; font-size: 0.7rem; backdrop-filter: blur(4px); }
+    .fui-text-note { color: #00f3ff; font-weight: 800; margin-bottom: 5px; opacity: 1; }
+    
+    .fui-badge { text-align: center; margin-top: 15px; color: #00aaff; }
+    .icon { font-family: monospace; opacity: 0.9; }
+
+    .labels-overlay {
+      position: absolute; bottom: 30px; left: 0; right: 0;
+      display: flex; justify-content: center; gap: 15%; pointer-events: none;
+      z-index: 20;
+    }
+    
+    .label-box {
+      font-size: 0.9rem; font-weight: 800; letter-spacing: 2px;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(0, 10, 25, 0.8); padding: 5px 15px; border-radius: 4px;
+      backdrop-filter: blur(4px);
+    }
+    
+    .cyan { color: #00f3ff; text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); border: 1px solid #00f3ff; }
+    .blue { color: #3399ff; text-shadow: 0 0 10px rgba(51, 153, 255, 0.5); border: 1px solid #3399ff; }
+    
+    .labels-overlay.fui-bottom-labels {
+      bottom: 60px;
+    }

@@ -120,3 +120,98 @@ input {
   50% { opacity: 0.5; box-shadow: 0 0 15px var(--tron-cyan); }
   100% { opacity: 1; box-shadow: 0 0 5px var(--tron-cyan); }
 }
+
+/* =================================================================
+                 LCARS RESPONSIVE ENGINE
+================================================================= */
+
+/* Desktop & Wide Screens  */
+
+/* TABLET / PADD MODE (Small Screens / Portrait) */
+@media screen and (max-width: 1024px) {
+  :root {
+    --lcars-elbow-radius: 35px;
+    --lcars-bar-height: 28px;
+  }
+
+  .lcars-elbow {
+    width: 150px;
+    height: 100px;
+  }
+
+  .tron-panel-frame {
+    padding: 1.5rem; 
+  }
+}
+
+/* MOBILE MODE (Smartphones / Tricorder) */
+@media screen and (max-width: 600px) {
+  :root {
+    --lcars-elbow-radius: 25px;
+    --lcars-bar-height: 24px;
+    --lcars-bar-height-mobile: 40px; 
+  }
+
+
+  .lcars-elbow {
+    width: 100%;
+    height: auto;
+    border-left: none;
+    border-top: var(--lcars-bar-height) solid var(--tron-cyan);
+    border-radius: 0;
+    box-shadow: 0 -2px 10px var(--tron-cyan-glow);
+  }
+
+  /* Vertikaler Stack */
+  .vertical-form .inputs-container ::ng-deep app-input,
+  .vertical-form .inputs-container ::ng-deep app-dropdown {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .vertical-form .inputs-container ::ng-deep label {
+    flex: none !important;
+    width: 100%;
+    text-align: left !important;
+    font-size: 0.75rem;
+  }
+
+  .vertical-form .action-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .action-spacer {
+    display: none !important; 
+  }
+
+  .lcars-bar {
+    height: var(--lcars-bar-height-mobile); 
+    font-size: 0.8rem;
+  }
+}
+
+/* ULTRA-WIDE MODE (Main Viewscreen) */
+@media screen and (min-width: 2000px) {
+  :root {
+    --lcars-elbow-radius: 60px;
+    --lcars-bar-height: 45px;
+  }
+  
+  body {
+    background-size: 80px 80px; /* Größeres Grid für 4K+ */
+  }
+}
+
+/* PRINT MODE  */
+@media print {
+  body {
+    background: none;
+    color: black;
+  }
+  .lcars-elbow, .lcars-bar {
+    box-shadow: none;
+    -webkit-print-color-adjust: exact;
+  }
+}

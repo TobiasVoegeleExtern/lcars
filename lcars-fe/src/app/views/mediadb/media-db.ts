@@ -1,9 +1,8 @@
 import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGrid } from '../../components/form-grid/form-grid';
-import { AppInput } from '../../components/input/input';
 import { LcarsGraphqlService } from '../../core/services/lcars-graphql.service';
-import { LcarsEntry } from '../../core/models/lcars-entry.model'; 
+import { MediaCardComponent } from '../../components/mediacard/mediacard';
+import { MediaDbFormComponent } from '../../components/media-form/media-db-form.component';
 
 interface MediaRecord {
   id: string;
@@ -16,102 +15,177 @@ interface MediaRecord {
 @Component({
   selector: 'app-media-db',
   standalone: true,
-  imports: [CommonModule, FormGrid, AppInput], 
+  imports: [
+    CommonModule, 
+    MediaCardComponent, 
+    MediaDbFormComponent
+  ],
   templateUrl: './media-db.html',
   styleUrls: ['./media-db.scss']
 })
 export class MediaDbComponent implements OnInit {
-  
   private readonly graphqlService = inject(LcarsGraphqlService);
 
+  // --- STATE SIGNALS ---
   dbStore = signal<MediaRecord[]>([]);
   searchQuery = signal<string>('');
   
-  // States für UI-Panels
+  selectedCategory = signal<string | null>(null);
   selectedRecord = signal<MediaRecord | null>(null);
   isCreating = signal<boolean>(false);
   draftRecord = signal<Partial<MediaRecord>>({});
 
-  filteredRecords = computed(() => {
-    const query = this.searchQuery().toLowerCase();
-    return query === '' 
-      ? this.dbStore() 
-      : this.dbStore().filter(record => record.title.toLowerCase().includes(query));
+  // --- COMPUTED DATA ---
+
+  /**
+   * Erstellt die Directory-Übersicht basierend auf den vorhandenen Datentypen
+   */
+  categories = computed(() => {
+    const records = this.dbStore();
+    const groupMap = new Map<string, { name: string, count: number, color: string }>();
+    
+    records.forEach(r => {
+      if (!groupMap.has(r.type)) {
+        groupMap.set(r.type, { 
+          name: r.type, 
+          count: 0, 
+          color: this.getCategoryColor(r.type) 
+        });
+      }
+      groupMap.get(r.type)!.count++;
+    });
+    return Array.from(groupMap.values());
   });
 
-  ngOnInit(): void {
-    this.loadData();
+  /**
+   * Filtert die Datensätze nach gewählter Kategorie oder Suchanfrage
+   */
+  filteredRecords = computed(() => {
+    const query = this.searchQuery().toLowerCase();
+    const category = this.selectedCategory();
+    let list = this.dbStore();
+
+    if (category && query === '') {
+      list = list.filter(r => r.type === category);
+    } else if (query !== '') {
+      list = list.filter(r => r.title.toLowerCase().includes(query));
+    }
+    return list;
+  });
+
+  // --- LIFECYCLE ---
+  ngOnInit(): void { 
+    this.loadData(); 
   }
 
+  // --- DATA LOADING ---
   loadData(): void {
     this.graphqlService.searchEntries(null, 0, 50).subscribe(page => {
-      const entries = page !== null && page.items ? page.items : [];
-      const mappedRecords: MediaRecord[] = entries.length > 0 ? entries.map(entry => ({
-        id: entry.identity?.id ? entry.identity.id : 'SYS-ERROR',
-        title: entry.identity?.systemTag ? entry.identity.systemTag : 'UNNAMED_RECORD',
-        type: entry.classification?.collectionName 
-            ? (entry.classification.collectionName as 'AUDIO' | 'VIDEO' | 'HOLO' | 'DATA') 
-            : 'DATA',
+      const entries = page?.items || [];
+      const mapped: MediaRecord[] = entries.map(entry => ({
+        id: entry.identity?.id || 'SYS-ERR',
+        title: entry.identity?.systemTag || 'UNNAMED',
+        type: (entry.classification?.collectionName as any) || 'DATA',
         status: entry.visual?.activeGlow ? 'ONLINE' : 'ARCHIVED',
-        color: entry.visual?.color ? entry.visual.color : '#444444'
-      })) : [];
-      
-      this.dbStore.set(mappedRecords);
+        color: entry.visual?.color || '#444444'
+      }));
+      this.dbStore.set(mapped);
     });
+  }
+
+  // --- NAVIGATION & SEARCH ---
+  setCategory(cat: string | null) {
+    this.selectedCategory.set(cat);
+    this.selectedRecord.set(null);
+    this.isCreating.set(false);
   }
 
   updateSearch(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    input.value !== undefined ? this.searchQuery.set(input.value) : this.searchQuery.set('');
+    const val = (event.target as HTMLInputElement).value;
+    this.searchQuery.set(val || '');
   }
 
-  // --- NEUE METHODEN FÜR DAS CREATE-FORMULAR ---
+  selectRecord(record: MediaRecord) {
+    if (this.selectedRecord()?.id === record.id) {
+      this.selectedRecord.set(null);
+    } else {
+      this.isCreating.set(false);
+      this.selectedRecord.set(record);
+    }
+  }
 
-  startCreate(): void {
-    // Ternary Execution: Panel resetten und Erstellungs-Modus starten
+  // --- FORM HANDLERS (EMITTED FROM SUB-COMPONENTS) ---
+
+  /**
+   * Verarbeitet Änderungen im "Neu Erstellen" Formular
+   */
+  handleUpdateDraft(event: { field: string, value: string }) {
+    this.draftRecord.update(d => ({ 
+      ...d, 
+      [event.field]: event.value 
+    }));
+  }
+
+  /**
+   * Verarbeitet Änderungen im "Edit" Formular
+   */
+  handleUpdateRecord(event: { field: string, value: string }) {
+    const cur = this.selectedRecord();
+    if (cur) {
+      this.selectedRecord.set({ 
+        ...cur, 
+        [event.field]: event.value 
+      });
+    }
+  }
+
+  // --- CRUD ACTIONS ---
+  startCreate() {
     this.selectedRecord.set(null);
     this.isCreating.set(true);
-    // Voreinstellung für eine neue CD
-    this.draftRecord.set({ title: '', type: 'AUDIO', status: 'ONLINE', color: '#86abff' });
+    this.draftRecord.set({ 
+      title: '', 
+      type: (this.selectedCategory() as any) || 'DATA', 
+      status: 'ONLINE',
+      color: '#86abff'
+    });
   }
 
-  cancelCreate(): void {
-    this.isCreating.set(false);
+  cancelCreate() { 
+    this.isCreating.set(false); 
     this.draftRecord.set({});
   }
 
-  updateDraft(field: keyof MediaRecord, event: Event): void {
-    const input = event.target as HTMLInputElement;
-    // Ternary-Sicherung für den Eingabewert
-    const value = input.value !== undefined ? input.value : '';
-    this.draftRecord.update(draft => ({ ...draft, [field]: value }));
+  insertNewRecord() {
+    const draft = this.draftRecord();
+    if (!draft.title) return;
+    
+    this.graphqlService.createEntry({ 
+      systemTag: draft.title, 
+      collectionName: draft.type 
+    }).subscribe(() => {
+      this.loadData();
+      this.cancelCreate();
+    });
   }
 
-  insertNewRecord(): void {
-  const draft = this.draftRecord();
-  
-  draft.title === '' || draft.title === undefined ? console.warn('TITLE_REQUIRED') : (() => {
-    // Wir bauen das Objekt EXAKT so, wie es der LcarsEntryInput im Java-Backend erwartet
-    const payload = {
-      systemTag: draft.title,
-      collectionName: draft.type || 'AUDIO',
-      format: 'CD'
+  saveRecord() { 
+    const record = this.selectedRecord();
+    if (record) {
+      console.log('UPDATING_RECORD_IN_BACKEND:', record);
+      // Hier käme dein GraphQL Update Call hin
+      this.selectedRecord.set(null); 
+    }
+  }
+
+  // --- HELPERS ---
+  private getCategoryColor(type: string): string {
+    const colors: Record<string, string> = { 
+      'AUDIO': '#ff9d00', 
+      'VIDEO': '#00f3ff', 
+      'HOLO': '#ff003c', 
+      'DATA': '#c886ff' 
     };
-
-    this.graphqlService.createEntry(payload).subscribe(result => {
-      // Ternary: Erfolg ? UI Reset : Fehler-Log
-      result !== null 
-        ? (() => { this.loadData(); this.cancelCreate(); })() 
-        : console.error('INSERT_FAILED_BY_BACKEND');
-    });
-  })();
-}
-
-  // (Deine bisherige selectRecord & saveRecord Logik bleibt für den Edit-Modus erhalten)
-  selectRecord(record: MediaRecord): void {
-    this.isCreating.set(false);
-    this.selectedRecord()?.id === record.id 
-      ? this.selectedRecord.set(null) 
-      : this.selectedRecord.set(record);
+    return colors[type] || '#86abff';
   }
 }

@@ -22,15 +22,15 @@
   position: relative;
   display: block;
   width: 100%;
-  border-radius: 12px; /* <-- Weiche LCARS-Kurven für den Container */
-  overflow: hidden;    /* Wichtig: Schneidet die Scanline an den Rundungen sauber ab */
+  border-radius: 12px;
+  overflow: hidden;
 
   /* Die leuchtende Unterstreichung */
   .input-scanline {
     position: absolute;
     bottom: 0;
     left: 0;
-    height: 3px; /* Minimal dicker für besseren Kontrast in den Ecken */
+    height: 3px; 
     width: 0%;
     background: var(--tron-orange, #ff9d00);
     box-shadow: 0 0 10px var(--tron-orange, #ff9d00);
@@ -50,8 +50,7 @@
   background-color: rgba(0, 243, 255, 0.05);
   color: #fff;
   border: 1px solid rgba(0, 243, 255, 0.2);
-  border-radius: 12px; /* <-- Weiche LCARS-Kurven für das Feld selbst */
-  /* LCARS Signature Border Links */
+  border-radius: 12px;
   border-left: 4px solid var(--tron-cyan, #00f3ff);
   outline: none;
   transition: all 0.3s ease-in-out;

@@ -1,0 +1,66 @@
+/* --- HOST (Der Container der Form-Komponente) --- */
+:host { 
+  display: block; 
+  flex: 0 0 400px; 
+  width: 400px;
+  max-width: 100%; /* Verhindert Ausbrechen auf kleinen Screens */
+  height: 100%; 
+  box-sizing: border-box;
+}
+
+/* --- DAS PANEL --- */
+.detail-panel-wrapper {
+  height: 100%; 
+  width: 100%;
+  box-sizing: border-box;
+  border-right: 2px solid var(--tron-cyan, #00f3ff);
+  padding: 20px 20px 20px 0; /* Rechts 20px Abstand, damit nichts am Rand klebt */
+  overflow-y: auto; 
+  overflow-x: hidden; /* Kappt gnadenlos alles, was breiter als das Panel ist */
+  animation: fadeIn 0.3s ease;
+}
+
+/* --- HOLZHAMMER 2.0 (Zwingt die Child-Elemente in die Knie) --- */
+::ng-deep app-form-grid,
+::ng-deep app-input {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+::ng-deep app-input * {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/* --- HOLO PREVIEW --- */
+.holo-preview-box {
+  width: 100%; 
+  min-height: 80px; 
+  margin: 20px 0; 
+  border: 1px dashed var(--tron-cyan, #00f3ff);
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  background: rgba(0, 243, 255, 0.03); 
+  color: var(--tron-cyan, #00f3ff); 
+  font-family: 'JetBrains Mono', monospace; 
+  font-size: 0.7rem;
+  box-sizing: border-box;
+}
+
+/* Actions Container (Buttons) absichern */
+::ng-deep [form-actions] {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  flex-wrap: wrap; 
+  width: 100%; 
+  max-width: 100%;
+}
+
+@keyframes fadeIn { 
+  from { opacity: 0; transform: translateX(-20px); } 
+  to { opacity: 1; transform: translateX(0); } 
+}

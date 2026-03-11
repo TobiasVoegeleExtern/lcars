@@ -26,6 +26,7 @@
   }
 
   .permission-warning-title {
+    display: inline-block; /* FIX: Erlaubt sauberes Skewing für den Glitch-Effekt */
     margin: 0;
     font-size: 1rem;
     font-weight: 800;
@@ -57,7 +58,6 @@
 .tron-panel-frame {
   background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,26,45,0.9) 100%);
   border: 1px solid rgba(0, 243, 255, 0.2);
-  /* Der dicke LCARS-Balken an der linken Seite */
   border-left: 12px solid var(--tron-cyan); 
   border-radius: 0 15px 15px 0;
   padding: 2rem;
@@ -106,18 +106,7 @@
   display: flex; flex-direction: column;
   .inputs-container {
     display: flex; flex-direction: column; gap: 1rem;
-    
-    ::ng-deep .lcars-input-row {
-      display: flex; align-items: center; gap: 1rem; width: 100%;
-      
-      label {
-        flex: 0 0 120px;
-        color: var(--tron-cyan);
-        font-size: 0.8rem;
-        text-align: right;
-      }
-      .input-element { flex: 1; }
-    }
+    /* Phantom-Klasse .lcars-input-row entfernt */
   }
   .action-row {
     margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);
